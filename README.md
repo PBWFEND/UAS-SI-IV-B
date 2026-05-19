@@ -1,113 +1,136 @@
-# UJIAN AKHIR SEMESTER (UAS) GENAP TAHUN AKADEMIK 2025/2026
+# UJIAN AKHIR SEMESTER (UAS) GENAP
 
-**Mata Kuliah**: Pemrograman Berbasis Web Front-End  
-**Semester/SKS**: IV-A/B / 3 SKS  
-**Program Studi**: S1 Sistem Informasi  
-**Hari/Tanggal**: 
-**Waktu**:   -
-**Dosen**: Yanyan Sofiyan, M.Kom.  
-**Bentuk Soal**: ~~Analisis/Essay/Pilihan Ganda/Presentasi/Penugasan~~/Proyek \*)  
-**Pelaksanaan**: ~~Luring~~ / Daring \*)
+## TAHUN AKADEMIK 2025/2026
+
+**Mata Kuliah**: Pemrograman Berbasis Web Front-End
+
+**Semester/SKS**: IV-A/B / 3 SKS
+
+**Program Studi**: S1 Sistem Informasi
+
+**Hari / Tanggal**: ........................................................
+
+**Waktu**: .................... s.d. ....................
+
+**Dosen**: Yanyan Sofiyan, M.Kom.
+
+**Bentuk Soal**: Proyek
+
+**Pelaksanaan**: Daring (Online)
 
 ---
 
-### A. Deskripsi Umum
-Anda diberi kebebasan untuk memilih dan merancang sendiri tema aplikasi, dengan syarat utama aplikasi tersebut merupakan aplikasi **CRUD (Create, Read, Update, Delete)**. Fokus utama penilaian adalah pada **logika CRUD yang fungsional** dan **antarmuka pengguna (UI/UX) yang baik**. Seluruh data akan dikelola di sisi klien (client-side).
+### A. DESKRIPSI UMUM
 
-### B. Tema Proyek: Bebas & Kreatif
-Pilihlah sebuah ide aplikasi yang memungkinkan pengguna untuk mengelola sekumpulan data. Kreativitas dalam memilih tema dihargai, selama semua persyaratan teknis di bawah ini terpenuhi.
+Anda diberi kebebasan untuk memilih dan merancang sendiri tema aplikasi, dengan syarat utama aplikasi tersebut merupakan aplikasi **CRUD (Create, Read, Update, Delete)**. Fokus utama penilaian adalah pada **logika CRUD yang fungsional** dan **Antarmuka Pengguna (UI/UX) yang baik**. Seluruh pengelolaan data dilakukan di sisi klien (*client-side*).
+
+---
+
+### B. TEMA PROYEK: BEBAS & KREATIF
+
+Pilihlah sebuah ide aplikasi yang memungkinkan pengguna untuk mengelola sekumpulan data. Kreativitas dalam memilih tema sangat dihargai, selama semua persyaratan teknis di bawah ini terpenuhi.
 
 **Contoh Ide Proyek (Anda tidak harus memilih dari daftar ini):**
-- **Aplikasi Manajemen Tugas (To-do List):** Menambah, melihat, menandai selesai, dan menghapus tugas.
-- **Aplikasi Pencatat Keuangan Sederhana:** Mencatat pemasukan dan pengeluaran.
-- **Aplikasi Daftar Kontak:** Mengelola daftar kontak teman atau kolega.
-- **Aplikasi Catatan Sederhana (Simple Notes):** Membuat, mengedit, dan menghapus catatan singkat.
-- **Aplikasi Manajemen Buku (Bookshelf App):** Mengelola koleksi buku yang sudah atau akan dibaca.
 
-#### Struktur Data
+* **Aplikasi Manajemen Tugas (To-do List):** Menambah, melihat, menandai selesai, dan menghapus tugas.
+* **Aplikasi Pencatat Keuangan Sederhana:** Mencatat pemasukan dan pengeluaran keuangan.
+* **Aplikasi Daftar Kontak:** Mengelola daftar kontak teman, keluarga, atau kolega.
+* **Aplikasi Catatan Sederhana (Simple Notes):** Membuat, membaca, mengedit, dan menghapus catatan singkat.
+* **Aplikasi Manajemen Buku (Bookshelf App):** Mengelola koleksi buku yang sudah atau akan dibaca.
+
+#### 1. Struktur Data
+
 Anda bebas menentukan struktur data untuk setiap `item` di aplikasi Anda, namun **wajib memiliki**:
 
-- Sebuah `id` yang unik (bisa menggunakan `String(+new Date())` atau library seperti `uuid`).
-- Minimal **dua properti data lainnya** (contoh: `{ title: 'Belajar React', isDone: false }`).
+* Sebuah `id` yang unik (bisa menggunakan `String(+new Date())` atau library seperti `uuid`).
+* Minimal **dua properti data lainnya** (contoh: `{ title: 'Belajar React', isDone: false }`).
 
-Sebagai **contoh referensi**, untuk proyek "Aplikasi Manajemen Buku", Anda bisa menggunakan struktur data yang lebih detail seperti ini:
+> **Contoh Referensi:** > Untuk proyek "Aplikasi Manajemen Buku", Anda bisa menggunakan struktur data yang lebih detail seperti ini:
+> ```javascript
+> {
+>   id: string,         // ID unik (timestamp string)
+>   title: string,      // Judul buku
+>   author: string,     // Nama penulis
+>   isRead: boolean,    // Status sudah dibaca atau belum
+>   addedDate: string   // Tanggal penambahan (format lokal)
+> }
+> 
+> ```
+> 
+> 
+> *Live Demo Referensi:* [https://book-managers.netlify.app](https://book-managers.netlify.app)
 
-```javascript
-// HANYA CONTOH
-{
-  id: string,         // ID unik (timestamp string)
-  title: string,      // Judul buku
-  author: string,     // Nama penulis
-  isRead: boolean,    // Status sudah dibaca/belum
-  addedDate: string   // Tanggal penambahan (format lokal)
-}
-```
-> Live Demo : https://book-managers.netlify.app
+> *Repository* : [https://github.com/yysofiyan/example-book-manager](https://github.com/yysofiyan/example-book-manager)
 
-Persistensi Data (Wajib)
+#### 2. Persistensi Data (Wajib)
 
-Gunakan `localStorage` untuk menyimpan data agar tidak hilang saat browser ditutup atau di-refresh. Manfaatkan hook `useEffect` untuk melakukan sinkronisasi antara state aplikasi dengan `localStorage`.
+Gunakan `localStorage` untuk menyimpan data agar data tidak hilang saat browser ditutup atau di-*refresh*. Manfaatkan *hook* `useEffect` untuk melakukan sinkronisasi antara *state* aplikasi dengan `localStorage`.
+
+---
+
+### C. PERSYARATAN TEKNIS & FUNGSIONALITAS WAJIB
+
+Apapun tema yang Anda pilih, aplikasi Anda **WAJIB** memiliki komponen dan fungsionalitas berikut:
+
+#### 1. Struktur & State Management (Bobot: 25%)
+
+* Gunakan **Vite** untuk inisialisasi proyek.
+* Terapkan konsep *"lifting state up"*: *State* utama (array data) harus berada di komponen level atas (`App.jsx`) dan fungsi *handler* (untuk CRUD) dioper ke komponen anak melalui *props*.
+* Buat komponen yang logis, modular, dan dapat digunakan kembali (misal: `FormInput`, `ItemList`, `Item`).
+
+#### 2. Fungsionalitas CRUD (Bobot: 40%)
+
+* **CREATE**: Sediakan form untuk menambah data baru. Form harus menyertakan validasi dasar (misal: input utama tidak boleh kosong).
+* **READ**: Tampilkan semua data yang ada dengan jelas.
+* *(Nilai Plus)*: Jika data dapat dikelompokkan berdasarkan kategori atau status (misal: "Tugas Belum Selesai" dan "Tugas Selesai").
 
 
-C. Persyaratan Teknis & Fungsionalitas Wajib
+* **UPDATE**: Sediakan cara untuk mengubah data yang sudah ada.
+* *Minimal*: Pengguna harus bisa mengubah satu properti (misal: mengubah status dari "belum selesai" menjadi "selesai").
+* *(Nilai Plus)*: Adanya fungsionalitas edit penuh (mengubah teks/konten) melalui sebuah form.
 
-Apapun tema yang Anda pilih, aplikasi Anda WAJIB memiliki fungsionalitas berikut:
 
-1. Struktur & State Management (Bobot: 25%)
+* **DELETE**: Sediakan tombol untuk menghapus data. Wajib menampilkan dialog konfirmasi menggunakan `window.confirm()` sebelum data dihapus secara permanen.
 
-- Gunakan Vite untuk inisialisasi proyek.
-- Terapkan konsep _"lifting state up"_: `State` utama (array data) harus berada di komponen level atas (`App.jsx`) dan fungsi `handler` (untuk CRUD) dioper ke komponen anak melalui props.
-- Buat komponen yang logis dan dapat digunakan kembali (misal: `FormInput`, `ItemList`, `Item`).
+#### 3. UI/UX & Interaktivitas (Bobot: 20%)
 
-2. Fungsionalitas `CRUD (Create, Read, Update, Delete)` (Bobot: 40%)
+* **Desain Antarmuka**: Tampilan harus bersih, rapi, responsif, dan mudah dipahami oleh pengguna.
+* **Umpan Balik (Feedback)**: Berikan umpan balik yang jelas kepada pengguna (misal: form otomatis dikosongkan setelah *submit* berhasil, adanya notifikasi sukses, dll).
+* **Fitur Pencarian/Filter**: Wajib menyediakan fitur untuk mencari atau memfilter data berdasarkan salah satu propertinya secara *real-time*.
 
-- **CREATE**: Sediakan form untuk menambah data baru. Form harus menyertakan validasi dasar (misal: input utama tidak boleh kosong).
+#### 4. Deployment & Kualitas Kode (Bobot: 15%)
 
-- **READ**: Tampilkan semua data yang ada dengan jelas.
+* Kode program harus bersih, terstruktur, terindentasi dengan baik, dan mudah dibaca.
+* Unggah proyek ke repositori **GitHub**.
+* *Deploy* aplikasi Anda ke **Vercel** atau **Netlify** dan pastikan dapat diakses secara publik dengan baik.
 
-  - (Nilai Plus): Jika data dapat dikelompokkan berdasarkan kategori atau status (misal: "Tugas Belum Selesai" dan "Tugas Selesai").
+---
 
-- **UPDATE**: Sediakan cara untuk mengubah data yang sudah ada.
+### D. KRITERIA PENILAIAN RINCI
 
-  - **Minimal**: Pengguna harus bisa mengubah satu properti (misal: mengubah status dari "belum selesai" menjadi "selesai").
-  - (Nilai Plus): Adanya fungsionalitas edit penuh melalui sebuah form.
+| Kriteria Penilaian | Bobot |
+| --- | --- |
+| **Fungsionalitas CRUD Lengkap & Benar** (Aplikasi berjalan tanpa error) | 40% |
+| **Manajemen State, Props, & Alur Data** (Sesuai kaidah React) | 25% |
+| **Desain UI/UX dan Interaktivitas Pengguna** (Kerapian & Fitur Pencarian) | 20% |
+| **Kualitas Kode, Deployment, & Dokumentasi** | 15% |
+| **TOTAL** | **100%** |
 
-- **DELETE**: Sediakan tombol untuk menghapus data. Wajib menampilkan dialog konfirmasi (`gunakan window.confirm()`) sebelum data dihapus permanen.
+---
 
-3. UI/UX & Interaktivitas (Bobot: 20%)
-
-- Desain Antarmuka: Tampilan harus bersih, rapi, dan mudah dipahami oleh pengguna.
-
-- **Umpan Balik (Feedback)**: Berikan umpan balik yang jelas kepada pengguna (misal: `form` dikosongkan setelah `submit` berhasil, notifikasi sederhana, dll).
-
-- **Fitur Pencarian/Filter**: Wajib ada fitur untuk mencari atau memfilter data berdasarkan salah satu propertinya secara `real-time.`
-
-4. Deployment & Kualitas Kode (Bobot: 15%)
-
-- Kode harus bersih, terstruktur, dan mudah dibaca.
-
-- Unggah proyek ke repositori `GitHub`.
-
-- Deploy aplikasi Anda ke `Vercel` atau `Netlify` dan pastikan berfungsi dengan baik.
-
-D. Kriteria Penilaian Rinci
-
-| Kriteria | Bobot |
-|----------|-------|
-| Fungsionalitas CRUD Lengkap & Benar | 40% |
-| Manajemen State, Props, & Alur Data | 25% |
-| Desain UI/UX dan Interaktivitas Pengguna | 20% |
-| Kualitas Kode, Deployment, & Dokumentasi | 15% |
-| Total | 100% |
-
-E. Prosedur Pengumpulan
+### E. PROSEDUR PENGUMPULAN
 
 1. Buat file `README.md` yang informatif di dalam repositori GitHub Anda.
-2. File README.md wajib berisi:
+2. File `README.md` tersebut wajib memuat informasi berikut:
+* **Nama Kelompok & NIM** anggota.
+* **Tema & Deskripsi Aplikasi**: Jelaskan latar belakang aplikasi yang dibuat serta fitur-fiturnya.
+* **Struktur Data**: Jelaskan struktur objek/properti data yang digunakan.
+* **Link Demo Live**: URL tautan aktif dari hasil *deploy* di Vercel/Netlify.
 
-   - **Nama Kelompok & NIM** Anda.
-   - **Tema & Deskripsi Aplikasi:** Jelaskan aplikasi apa yang Anda buat dan fitur-fiturnya.
-   - **Struktur Data**: Jelaskan struktur objek yang Anda gunakan untuk aplikasi Anda.
-   - **Link Aplikasi Live**: URL Vercel/Netlify Anda yang sudah berfungsi.
 
-3. Push ke repositori https://github.com/PBWFEND/UAS
+3. Lakukan *Push* hasil akhir proyek ke repositori kelas:
+👉 [https://github.com/PBWFEND/UAS-SI-IV-B](https://github.com/PBWFEND/UAS-SI-IV-B)
+
+---
+
+*Selamat Mengerjakan, Jaga Sportivitas, dan Semoga Sukses!*
