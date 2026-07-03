@@ -73,3 +73,6 @@ Fitur	Deskripsi
     Konfirmasi Modal :	Konfirmasi sebelum menghapus data
     Penyimpanan Lokal :	Data tersimpan di localStorage (persisten meskipun halaman di-refresh)
     UI Modern & Responsif :	Tema Neobrutalism dengan gradien, bayangan, dan animasi halus.
+
+    Link Deploy Netlify:
+    https://travelwiseapp.netlify.app/ 
