@@ -1,136 +1,189 @@
-# UJIAN AKHIR SEMESTER (UAS) GENAP
+# 📚 TASKORA - Task Organizer Assistant
 
-## TAHUN AKADEMIK 2025/2026
-
-**Mata Kuliah**: Pemrograman Berbasis Web Front-End
-
-**Semester/SKS**: IV-A/B / 3 SKS
-
-**Program Studi**: S1 Sistem Informasi
-
-**Hari / Tanggal**: ........................................................
-
-**Waktu**: .................... s.d. ....................
-
-**Dosen**: Yanyan Sofiyan, M.Kom.
-
-**Bentuk Soal**: Proyek
-
-**Pelaksanaan**: Daring (Online)
+TASKORA (Task Organizer Assistant) merupakan aplikasi berbasis web yang dikembangkan menggunakan React.js dan Vite untuk membantu mahasiswa mengelola tugas kuliah secara lebih terorganisir. Aplikasi ini menerapkan konsep CRUD (Create, Read, Update, Delete) dengan penyimpanan data menggunakan Local Storage sehingga data tetap tersimpan meskipun halaman di-refresh.
 
 ---
 
-### A. DESKRIPSI UMUM
+## 👥 Kelompok
 
-Anda diberi kebebasan untuk memilih dan merancang sendiri tema aplikasi, dengan syarat utama aplikasi tersebut merupakan aplikasi **CRUD (Create, Read, Update, Delete)**. Fokus utama penilaian adalah pada **logika CRUD yang fungsional** dan **Antarmuka Pengguna (UI/UX) yang baik**. Seluruh pengelolaan data dilakukan di sisi klien (*client-side*).
-
----
-
-### B. TEMA PROYEK: BEBAS & KREATIF
-
-Pilihlah sebuah ide aplikasi yang memungkinkan pengguna untuk mengelola sekumpulan data. Kreativitas dalam memilih tema sangat dihargai, selama semua persyaratan teknis di bawah ini terpenuhi.
-
-**Contoh Ide Proyek (Anda tidak harus memilih dari daftar ini):**
-
-* **Aplikasi Manajemen Tugas (To-do List):** Menambah, melihat, menandai selesai, dan menghapus tugas.
-* **Aplikasi Pencatat Keuangan Sederhana:** Mencatat pemasukan dan pengeluaran keuangan.
-* **Aplikasi Daftar Kontak:** Mengelola daftar kontak teman, keluarga, atau kolega.
-* **Aplikasi Catatan Sederhana (Simple Notes):** Membuat, membaca, mengedit, dan menghapus catatan singkat.
-* **Aplikasi Manajemen Buku (Bookshelf App):** Mengelola koleksi buku yang sudah atau akan dibaca.
-
-#### 1. Struktur Data
-
-Anda bebas menentukan struktur data untuk setiap `item` di aplikasi Anda, namun **wajib memiliki**:
-
-* Sebuah `id` yang unik (bisa menggunakan `String(+new Date())` atau library seperti `uuid`).
-* Minimal **dua properti data lainnya** (contoh: `{ title: 'Belajar React', isDone: false }`).
-
-> **Contoh Referensi:** > Untuk proyek "Aplikasi Manajemen Buku", Anda bisa menggunakan struktur data yang lebih detail seperti ini:
-> ```javascript
-> {
->   id: string,         // ID unik (timestamp string)
->   title: string,      // Judul buku
->   author: string,     // Nama penulis
->   isRead: boolean,    // Status sudah dibaca atau belum
->   addedDate: string   // Tanggal penambahan (format lokal)
-> }
-> 
-> ```
-> 
-> 
-> *Live Demo Referensi:* [https://book-managers.netlify.app](https://book-managers.netlify.app)
-
-> *Repository* : [https://github.com/yysofiyan/example-book-manager](https://github.com/yysofiyan/example-book-manager)
-
-#### 2. Persistensi Data (Wajib)
-
-Gunakan `localStorage` untuk menyimpan data agar data tidak hilang saat browser ditutup atau di-*refresh*. Manfaatkan *hook* `useEffect` untuk melakukan sinkronisasi antara *state* aplikasi dengan `localStorage`.
+| Nama | NIM |
+|------|------|
+| Rahma Nadya | 240160221035 |
+| Putri Indra Lestari Aryanto | 240160221034 |
+| Siti Khodijah | 240160221045 |
+| Nabilla Natasya Putri | 240160221029 |
 
 ---
 
-### C. PERSYARATAN TEKNIS & FUNGSIONALITAS WAJIB
+## 🎓 Mata Kuliah
 
-Apapun tema yang Anda pilih, aplikasi Anda **WAJIB** memiliki komponen dan fungsionalitas berikut:
+**Pemrograman Berbasis Web Front-End**
 
-#### 1. Struktur & State Management (Bobot: 25%)
-
-* Gunakan **Vite** untuk inisialisasi proyek.
-* Terapkan konsep *"lifting state up"*: *State* utama (array data) harus berada di komponen level atas (`App.jsx`) dan fungsi *handler* (untuk CRUD) dioper ke komponen anak melalui *props*.
-* Buat komponen yang logis, modular, dan dapat digunakan kembali (misal: `FormInput`, `ItemList`, `Item`).
-
-#### 2. Fungsionalitas CRUD (Bobot: 40%)
-
-* **CREATE**: Sediakan form untuk menambah data baru. Form harus menyertakan validasi dasar (misal: input utama tidak boleh kosong).
-* **READ**: Tampilkan semua data yang ada dengan jelas.
-* *(Nilai Plus)*: Jika data dapat dikelompokkan berdasarkan kategori atau status (misal: "Tugas Belum Selesai" dan "Tugas Selesai").
-
-
-* **UPDATE**: Sediakan cara untuk mengubah data yang sudah ada.
-* *Minimal*: Pengguna harus bisa mengubah satu properti (misal: mengubah status dari "belum selesai" menjadi "selesai").
-* *(Nilai Plus)*: Adanya fungsionalitas edit penuh (mengubah teks/konten) melalui sebuah form.
-
-
-* **DELETE**: Sediakan tombol untuk menghapus data. Wajib menampilkan dialog konfirmasi menggunakan `window.confirm()` sebelum data dihapus secara permanen.
-
-#### 3. UI/UX & Interaktivitas (Bobot: 20%)
-
-* **Desain Antarmuka**: Tampilan harus bersih, rapi, responsif, dan mudah dipahami oleh pengguna.
-* **Umpan Balik (Feedback)**: Berikan umpan balik yang jelas kepada pengguna (misal: form otomatis dikosongkan setelah *submit* berhasil, adanya notifikasi sukses, dll).
-* **Fitur Pencarian/Filter**: Wajib menyediakan fitur untuk mencari atau memfilter data berdasarkan salah satu propertinya secara *real-time*.
-
-#### 4. Deployment & Kualitas Kode (Bobot: 15%)
-
-* Kode program harus bersih, terstruktur, terindentasi dengan baik, dan mudah dibaca.
-* Unggah proyek ke repositori **GitHub**.
-* *Deploy* aplikasi Anda ke **Vercel** atau **Netlify** dan pastikan dapat diakses secara publik dengan baik.
+Program Studi **S1 Sistem Informasi**
 
 ---
 
-### D. KRITERIA PENILAIAN RINCI
+# 📖 Deskripsi Aplikasi
 
-| Kriteria Penilaian | Bobot |
-| --- | --- |
-| **Fungsionalitas CRUD Lengkap & Benar** (Aplikasi berjalan tanpa error) | 40% |
-| **Manajemen State, Props, & Alur Data** (Sesuai kaidah React) | 25% |
-| **Desain UI/UX dan Interaktivitas Pengguna** (Kerapian & Fitur Pencarian) | 20% |
-| **Kualitas Kode, Deployment, & Dokumentasi** | 15% |
-| **TOTAL** | **100%** |
+TASKORA merupakan aplikasi manajemen tugas yang membantu pengguna dalam mencatat, mengelola, memantau, dan menyelesaikan tugas kuliah secara lebih efektif.
+
+Aplikasi ini dibangun menggunakan **React.js** dengan **Vite** sebagai build tool dan menerapkan konsep **lifting state up**. Seluruh data disimpan menggunakan **Local Storage** sehingga data tetap tersedia walaupun browser ditutup atau halaman di-refresh.
 
 ---
 
-### E. PROSEDUR PENGUMPULAN
+# ✨ Fitur Aplikasi
 
-1. Buat file `README.md` yang informatif di dalam repositori GitHub Anda.
-2. File `README.md` tersebut wajib memuat informasi berikut:
-* **Nama Kelompok & NIM** anggota.
-* **Tema & Deskripsi Aplikasi**: Jelaskan latar belakang aplikasi yang dibuat serta fitur-fiturnya.
-* **Struktur Data**: Jelaskan struktur objek/properti data yang digunakan.
-* **Link Demo Live**: URL tautan aktif dari hasil *deploy* di [Vercel]([https://](https://vercel.com)) / [Netlify]([https://](https://app.netlify.com/))
+## ✅ Create
+- Menambahkan tugas baru
+- Validasi form
+- Input mata kuliah
+- Input judul tugas
+- Input deadline
+- Input prioritas
 
+## ✅ Read
+- Menampilkan seluruh daftar tugas
+- Dashboard ringkasan tugas
+- Deadline terdekat
+- Kalender tugas
+- Statistik tugas
 
-3. Lakukan *Push* hasil akhir proyek ke repositori kelas:
-👉 [https://github.com/PBWFEND/UAS-SI-IV-B](https://github.com/PBWFEND/UAS-SI-IV-B)
+## ✅ Update
+- Checklist penyelesaian tugas
+- Progress bar otomatis berdasarkan checklist
+- Status tugas berubah menjadi selesai ketika checklist telah terpenuhi
+
+## ✅ Delete
+- Menghapus tugas
+- Konfirmasi penghapusan menggunakan `window.confirm()`
 
 ---
 
-*Selamat Mengerjakan, Happy Coding!*
+# 🔍 Fitur Tambahan
+
+- 🔎 Search tugas berdasarkan judul
+- 📚 Filter berdasarkan mata kuliah
+- 📌 Filter berdasarkan status (Aktif / Selesai)
+- 📊 Progress Bar
+- 📅 Kalender Deadline
+- 🔔 Notifikasi Deadline Hari Ini
+- 📈 Statistik Tugas
+- 💾 Penyimpanan data menggunakan Local Storage
+- 📱 Responsive User Interface
+
+---
+
+# 🗂 Struktur Data
+
+```javascript
+{
+  id: number,
+  matkul: string,
+  judul: string,
+  priority: string,
+  deadline: Date,
+  pengingat: string,
+  deskripsi: string,
+  checklist: [
+    {
+      id: string,
+      label: string,
+      done: boolean
+    }
+  ]
+}
+```
+
+---
+
+# 💻 Teknologi yang Digunakan
+
+- React.js
+- Vite
+- JavaScript (ES6)
+- CSS
+- Local Storage
+- Lucide React Icons
+
+---
+
+# ▶️ Cara Menjalankan Project
+
+Clone repository
+
+```bash
+git clone <repository-url>
+```
+
+Masuk ke folder project
+
+```bash
+cd taskora
+```
+
+Install dependency
+
+```bash
+npm install
+```
+
+Menjalankan project
+
+```bash
+npm run dev
+```
+
+---
+
+# 🌐 Demo Aplikasi
+
+GitHub Repository
+
+> https://github.com/PutriIndraa/kelompok5.git
+
+Live Demo
+
+> (Isi link Vercel atau Netlify setelah deploy)
+
+---
+
+# 📌 Pemenuhan Kriteria UAS
+
+✅ React + Vite
+
+✅ CRUD (Create, Read, Update, Delete)
+
+✅ Lifting State Up
+
+✅ Props & Component
+
+✅ Local Storage
+
+✅ Search
+
+✅ Filter
+
+✅ Progress Checklist
+
+✅ Dashboard
+
+✅ Statistik
+
+✅ Kalender
+
+✅ Responsive UI
+
+---
+
+# 👨‍💻 Author
+
+Kelompok TASKORA
+
+- Rahma Nadya
+- Putri Indra Lestari Aryanto
+- Siti Khodijah
+- Nabilla Natasya Putri
+
+---
+
+Terima kasih telah menggunakan **TASKORA - Task Organizer Assistant** 📚✨

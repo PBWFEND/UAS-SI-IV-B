@@ -1,0 +1,79 @@
+:root {
+  --font-display: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --color-bg: #F6F5FB;
+  --color-surface: #FFFFFF;
+
+  --color-primary: #6D4FE3;
+  --color-primary-dark: #5B3FD1;
+  --color-primary-light: #EDE9FE;
+  --color-primary-tint: #F3F0FF;
+
+  --color-text: #1E1B2E;
+  --color-text-muted: #6B7280;
+  --color-text-faint: #9CA3AF;
+  --color-border: #E7E4F2;
+
+  --color-high-bg: #FCE7EA;
+  --color-high-fg: #D6336C;
+  --color-medium-bg: #FEF3DA;
+  --color-medium-fg: #B7791F;
+  --color-low-bg: #DFF7E8;
+  --color-low-fg: #1C8A56;
+
+  --color-success: #1C8A56;
+  --color-danger: #D6336C;
+
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  --shadow-card: 0 6px 20px -8px rgba(109, 79, 227, 0.18);
+  --shadow-pop: 0 14px 32px -10px rgba(109, 79, 227, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-light);
+  border-radius: 10px;
+}
