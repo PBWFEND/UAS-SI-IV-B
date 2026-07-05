@@ -143,7 +143,7 @@ GitHub Repository
 
 Live Demo
 
-> (Isi link Vercel atau Netlify setelah deploy)
+> https://kelompok5-bvod.vercel.app/
 
 ---
 
