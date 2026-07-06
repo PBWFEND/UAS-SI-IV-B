@@ -1,35 +1,91 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import SearchBar from '../components/common/SearchBar';
+import Filter from '../components/spot/Filter';
+import SpotList from '../components/spot/SpotList';
+import { getSpots } from '../data/dummyData';
+import '../styles/search.css'; // ← Perbaiki path
 
 const SearchSpot = () => {
-  const navigate = useNavigate();
+  const location = useLocation();
+  const [spots, setSpots] = useState([]);
+  const [filteredSpots, setFilteredSpots] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('Semua');
+
+  // Ambil data dari local storage
+  useEffect(() => {
+    const allSpots = getSpots();
+    setSpots(allSpots);
+    setFilteredSpots(allSpots);
+  }, []);
+
+  // Baca query parameter dari URL (misal ?q=gunung)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const query = params.get('q');
+    const category = params.get('category');
+    
+    if (query) {
+      setSearchQuery(query);
+    }
+    if (category) {
+      const categoryMap = {
+        'wisata-alam': 'Alam',
+        'wisata-sejarah': 'Sejarah',
+        'kuliner': 'Kuliner',
+        'budaya': 'Budaya',
+        'religi': 'Religi',
+        'buatan': 'Buatan'
+      };
+      const mappedCategory = categoryMap[category] || category;
+      setSelectedCategory(mappedCategory);
+    }
+  }, [location.search]);
+
+  // Filter logic
+  useEffect(() => {
+    let result = spots;
+    
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(spot => 
+        spot.name.toLowerCase().includes(query) ||
+        spot.location.toLowerCase().includes(query) ||
+        spot.category.toLowerCase().includes(query)
+      );
+    }
+    
+    if (selectedCategory && selectedCategory !== 'Semua') {
+      result = result.filter(spot => 
+        spot.category === selectedCategory
+      );
+    }
+    
+    setFilteredSpots(result);
+  }, [searchQuery, selectedCategory, spots]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handleFilter = (category) => {
+    setSelectedCategory(category);
+  };
 
   return (
-    <div className="container" style={{ padding: '80px 0', textAlign: 'center' }}>
-      <div style={{ 
-        maxWidth: '500px', 
-        margin: '0 auto',
-        padding: '40px',
-        background: 'var(--white)',
-        borderRadius: 'var(--radius-md)',
-        border: '1px solid var(--sky-blue)'
-      }}>
-        <i className="fas fa-search" style={{ 
-          fontSize: '64px', 
-          color: 'var(--teal)',
-          marginBottom: '20px'
-        }}></i>
-        <h2 style={{ marginBottom: '12px' }}>Halaman Pencarian</h2>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
-          Fitur pencarian spot wisata akan segera hadir.
+    <div className="search-page">
+      <div className="search-header">
+        <span className="search-eyebrow">✨ Temukan Wisata</span>
+        <h1 className="search-title">Jelajahi Spot Wisata Sumedang</h1>
+        <p className="search-sub">
+          Temukan berbagai destinasi wisata menarik di Kabupaten Sumedang
         </p>
-        <button 
-          className="btn btn-primary" 
-          onClick={() => navigate('/')}
-        >
-          <i className="fas fa-arrow-left"></i> Kembali ke Beranda
-        </button>
       </div>
+
+      <SearchBar query={searchQuery} onChange={handleSearch} />
+      <Filter aktif={selectedCategory} onChange={handleFilter} />
+      <SpotList spots={filteredSpots} totalData={spots.length} />
     </div>
   );
 };

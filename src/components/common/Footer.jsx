@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const isDeveloper = localStorage.getItem('isDeveloper') === 'true';
+  const [isDeveloper, setIsDeveloper] = useState(false);
+
+  useEffect(() => {
+    const checkDeveloper = () => {
+      const code = localStorage.getItem('developerCode');
+      const validCodes = ['ILYAS2024', 'RESTY2024', 'INDRI2024', 'DISTI2024'];
+      setIsDeveloper(code && validCodes.includes(code));
+    };
+    
+    checkDeveloper();
+    window.addEventListener('storage', checkDeveloper);
+    return () => window.removeEventListener('storage', checkDeveloper);
+  }, []);
 
   return (
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-top">
-          {/* Logo & Description */}
           <div>
             <div className="footer-logo">
               <div className="logo-mark">
@@ -17,15 +28,14 @@ const Footer = () => {
                   <path d="M3 20l6-11 4 7 3-5 5 9H3z"/>
                 </svg>
               </div>
-              <div className="footer-logo-text">JejakLensa Sumedang</div>
+              <div className="footer-logo-text">SpotFinder Sumedang</div>
             </div>
             <p className="footer-description">
-              Platform pencarian dan eksplorasi tempat spot foto terbaik di Kabupaten Sumedang.
+              Platform pencarian dan eksplorasi tempat wisata terbaik di Kabupaten Sumedang.
               Temukan hidden gems, spot populer, dan rekomendasi menarik lainnya.
             </p>
           </div>
 
-          {/* Links */}
           <div className="footer-cols">
             <div className="footer-col">
               <h4>Jelajah</h4>
@@ -56,7 +66,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <span>&copy; {currentYear} JejakLensa Sumedang. All rights reserved.</span>
+        <span>&copy; {currentYear} SpotFinder Sumedang. All rights reserved.</span>
         <span>Dibangun dengan React &amp; Vite</span>
       </div>
     </footer>

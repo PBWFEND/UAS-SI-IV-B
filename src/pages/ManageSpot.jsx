@@ -1,482 +1,320 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getSpots, addSpot, deleteSpot, updateSpot } from '../data/dummyData';
+import SpotForm from '../components/spot/SpotForm';
+import Button from '../components/common/Button';
+import Modal from '../components/common/Modal';
+import '../styles/manage.css';
 
 const ManageSpot = () => {
-  const [spots, setSpots] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingSpot, setEditingSpot] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    category: '',
-    location: '',
-    price: '',
-    image: '',
-    description: ''
-  });
   const navigate = useNavigate();
+  const [spots, setSpots] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingSpot, setEditingSpot] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
+  const [developerCode, setDeveloperCode] = useState('');
 
-  // Cek apakah user adalah developer
-  const isDeveloper = localStorage.getItem('isDeveloper') === 'true';
+  // KODE UNIK UNTUK 4 ANGGOTA KELOMPOK
+  // Ganti dengan kode yang kalian sepakati!
+  const VALID_DEVELOPER_CODES = [
+    'ILYAS2024',   // Kode Ilyas
+    'RESTY2024',   // Kode Resty
+    'INDRI2024',   // Kode Indri
+    'DISTI2024'    // Kode Disti
+  ];
 
+  // Cek apakah user sudah login sebagai developer
   useEffect(() => {
-    if (!isDeveloper) {
-      navigate('/');
-      return;
+    const savedCode = localStorage.getItem('developerCode');
+    if (savedCode && VALID_DEVELOPER_CODES.includes(savedCode)) {
+      setIsAuthenticated(true);
+      setShowLogin(false);
+      loadSpots();
+    } else {
+      setIsAuthenticated(false);
+      setShowLogin(true);
+      setLoading(false);
     }
-    loadSpots();
-  }, [isDeveloper, navigate]);
+  }, []);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (VALID_DEVELOPER_CODES.includes(developerCode)) {
+      localStorage.setItem('developerCode', developerCode);
+      setIsAuthenticated(true);
+      setShowLogin(false);
+      loadSpots();
+    } else {
+      alert('Kode developer tidak valid!');
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('developerCode');
+    setIsAuthenticated(false);
+    setShowLogin(true);
+    setDeveloperCode('');
+  };
 
   const loadSpots = () => {
     const allSpots = getSpots();
     setSpots(allSpots);
+    setLoading(false);
   };
 
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleAdd = () => {
+    setEditingSpot(null);
+    setIsFormOpen(true);
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        setFormData({
-          ...formData,
-          image: base64String
-        });
-        setImagePreview(base64String);
-      };
-      reader.readAsDataURL(file);
+  const handleEdit = (spot) => {
+    setEditingSpot(spot);
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = (spot) => {
+    setDeleteTarget(spot);
+    setIsModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteTarget) {
+      deleteSpot(deleteTarget.id);
+      loadSpots();
+      setDeleteTarget(null);
+      setIsModalOpen(false);
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleFormSubmit = (formData) => {
+    setIsSubmitting(true);
+    
     if (editingSpot) {
-      // Update spot
       updateSpot(editingSpot.id, formData);
     } else {
-      // Add new spot
       addSpot(formData);
     }
+    
     loadSpots();
-    closeModal();
-  };
-
-  const openAddModal = () => {
+    setIsSubmitting(false);
+    setIsFormOpen(false);
     setEditingSpot(null);
-    setFormData({
-      name: '',
-      category: '',
-      location: '',
-      price: '',
-      image: '',
-      description: ''
-    });
-    setImagePreview(null);
-    setIsModalOpen(true);
   };
 
-  const openEditModal = (spot) => {
-    setEditingSpot(spot);
-    setFormData({
-      name: spot.name,
-      category: spot.category,
-      location: spot.location,
-      price: spot.price,
-      image: spot.image || '',
-      description: spot.description
-    });
-    setImagePreview(spot.image || null);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleFormCancel = () => {
+    setIsFormOpen(false);
     setEditingSpot(null);
-    setImagePreview(null);
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('Apakah Anda yakin ingin menghapus spot ini?')) {
-      deleteSpot(id);
-      loadSpots();
-    }
+  const formatHarga = (harga) => {
+    if (!harga) return "Gratis";
+    if (harga === 'Gratis' || harga === 'Rp0' || harga === '0') return "Gratis";
+    return harga;
   };
 
-  if (!isDeveloper) {
-    return null;
-  }
-
-  return (
-    <div className="container" style={{ padding: '40px 0' }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        marginBottom: '30px'
-      }}>
-        <div>
-          <h1>Kelola Spot Wisata</h1>
-          <p style={{ color: 'var(--text-muted)' }}>
-            Tambah, edit, atau hapus data spot wisata
-          </p>
-        </div>
-        <button className="btn btn-primary" onClick={openAddModal}>
-          <i className="fas fa-plus"></i> Tambah Spot
-        </button>
-      </div>
-
-      {/* Table */}
-      <div style={{
-        background: 'var(--white)',
-        borderRadius: 'var(--radius-md)',
-        border: '1px solid var(--sky-blue)',
-        overflow: 'hidden',
-        overflowX: 'auto'
-      }}>
-        <table style={{
-          width: '100%',
-          borderCollapse: 'collapse',
-          fontFamily: 'inherit',
-          minWidth: '600px'
-        }}>
-          <thead style={{ background: 'var(--navy)', color: 'var(--white)' }}>
-            <tr>
-              <th style={{ padding: '12px 16px', textAlign: 'left' }}>No</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left' }}>Gambar</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left' }}>Nama</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left' }}>Kategori</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left' }}>Lokasi</th>
-              <th style={{ padding: '12px 16px', textAlign: 'left' }}>Harga</th>
-              <th style={{ padding: '12px 16px', textAlign: 'center' }}>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {spots.length === 0 ? (
-              <tr>
-                <td colSpan="7" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
-                  Belum ada data spot. Klik "Tambah Spot" untuk menambahkan.
-                </td>
-              </tr>
-            ) : (
-              spots.map((spot, index) => (
-                <tr key={spot.id} style={{ borderBottom: '1px solid var(--sky-blue)' }}>
-                  <td style={{ padding: '12px 16px' }}>{index + 1}</td>
-                  <td style={{ padding: '12px 16px' }}>
-                    <img 
-                      src={spot.image || 'https://via.placeholder.com/50/2F4156/FFFFFF?text=No+Img'} 
-                      alt={spot.name}
-                      style={{
-                        width: '50px',
-                        height: '50px',
-                        objectFit: 'cover',
-                        borderRadius: 'var(--radius-sm)'
-                      }}
-                      onError={(e) => {
-                        e.target.src = 'https://via.placeholder.com/50/2F4156/FFFFFF?text=No+Img';
-                      }}
-                    />
-                  </td>
-                  <td style={{ padding: '12px 16px', fontWeight: '600' }}>{spot.name}</td>
-                  <td style={{ padding: '12px 16px' }}>{spot.category}</td>
-                  <td style={{ padding: '12px 16px' }}>{spot.location}</td>
-                  <td style={{ padding: '12px 16px' }}>{spot.price}</td>
-                  <td style={{ padding: '12px 16px', textAlign: 'center' }}>
-                    <button
-                      className="btn btn-secondary"
-                      style={{ padding: '6px 14px', fontSize: '12px', marginRight: '8px' }}
-                      onClick={() => openEditModal(spot)}
-                    >
-                      <i className="fas fa-edit"></i>
-                    </button>
-                    <button
-                      className="btn"
-                      style={{
-                        padding: '6px 14px',
-                        fontSize: '12px',
-                        background: '#e74c3c',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: 'var(--radius-sm)'
-                      }}
-                      onClick={() => handleDelete(spot.id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(0,0,0,0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000,
-          padding: '20px'
-        }} onClick={closeModal}>
-          <div style={{
-            background: 'var(--white)',
-            borderRadius: 'var(--radius-md)',
-            padding: '32px',
-            maxWidth: '600px',
-            width: '100%',
-            maxHeight: '90vh',
-            overflowY: 'auto'
-          }} onClick={(e) => e.stopPropagation()}>
-            <h2 style={{ marginBottom: '8px' }}>
-              {editingSpot ? 'Edit Spot' : 'Tambah Spot Baru'}
-            </h2>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
-              {editingSpot ? 'Perbarui data spot wisata' : 'Isi data spot wisata yang ingin ditambahkan'}
-            </p>
-
-            <form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>
-                  Nama Spot *
-                </label>
+  // Tampilkan halaman login jika belum login
+  if (showLogin) {
+    return (
+      <div className="manage-page">
+        <div className="manage-container">
+          <div className="manage-login-wrap">
+            <div className="manage-login-card">
+              <div className="manage-login-icon">🔐</div>
+              <h2 className="manage-login-title">Akses Developer</h2>
+              <p className="manage-login-sub">
+                Masukkan kode developer untuk mengelola data spot wisata.
+              </p>
+              <form onSubmit={handleLogin} className="manage-login-form">
                 <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px 14px',
-                    border: '1px solid var(--sky-blue)',
-                    borderRadius: 'var(--radius-sm)',
-                    fontFamily: 'inherit',
-                    fontSize: '14px'
-                  }}
+                  type="password"
+                  className="manage-login-input"
+                  placeholder="Masukkan kode developer..."
+                  value={developerCode}
+                  onChange={(e) => setDeveloperCode(e.target.value)}
+                  autoFocus
                 />
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>
-                  Kategori *
-                </label>
-                <select
-                  name="category"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px 14px',
-                    border: '1px solid var(--sky-blue)',
-                    borderRadius: 'var(--radius-sm)',
-                    fontFamily: 'inherit',
-                    fontSize: '14px',
-                    background: 'var(--white)'
-                  }}
-                >
-                  <option value="">Pilih Kategori</option>
-                  <option value="Alam">Alam</option>
-                  <option value="Sejarah">Sejarah</option>
-                  <option value="Kuliner">Kuliner</option>
-                  <option value="Budaya">Budaya</option>
-                  <option value="Religi">Religi</option>
-                  <option value="Buatan">Buatan</option>
-                </select>
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>
-                  Lokasi *
-                </label>
-                <input
-                  type="text"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Contoh: Kec. Sumedang Selatan"
-                  style={{
-                    width: '100%',
-                    padding: '10px 14px',
-                    border: '1px solid var(--sky-blue)',
-                    borderRadius: 'var(--radius-sm)',
-                    fontFamily: 'inherit',
-                    fontSize: '14px'
-                  }}
-                />
-              </div>
-
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>
-                  Harga Tiket *
-                </label>
-                <input
-                  type="text"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleInputChange}
-                  required
-                  placeholder="Contoh: Rp15.000 atau Gratis"
-                  style={{
-                    width: '100%',
-                    padding: '10px 14px',
-                    border: '1px solid var(--sky-blue)',
-                    borderRadius: 'var(--radius-sm)',
-                    fontFamily: 'inherit',
-                    fontSize: '14px'
-                  }}
-                />
-              </div>
-
-              {/* Upload Gambar */}
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>
-                  Upload Gambar
-                </label>
-                <div style={{
-                  border: '2px dashed var(--sky-blue)',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '20px',
-                  textAlign: 'center',
-                  cursor: 'pointer',
-                  transition: 'var(--transition)',
-                  background: imagePreview ? 'var(--white)' : 'var(--beige-light)'
-                }}
-                onClick={() => document.getElementById('imageUpload').click()}
-                onDragOver={(e) => {
-                  e.preventDefault();
-                  e.currentTarget.style.borderColor = 'var(--teal)';
-                  e.currentTarget.style.background = 'var(--sky-blue-light)';
-                }}
-                onDragLeave={(e) => {
-                  e.currentTarget.style.borderColor = 'var(--sky-blue)';
-                  e.currentTarget.style.background = imagePreview ? 'var(--white)' : 'var(--beige-light)';
-                }}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  const file = e.dataTransfer.files[0];
-                  if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setFormData({ ...formData, image: reader.result });
-                      setImagePreview(reader.result);
-                    };
-                    reader.readAsDataURL(file);
-                  }
-                  e.currentTarget.style.borderColor = 'var(--sky-blue)';
-                  e.currentTarget.style.background = imagePreview ? 'var(--white)' : 'var(--beige-light)';
-                }}
-                >
-                  <input
-                    type="file"
-                    id="imageUpload"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    style={{ display: 'none' }}
-                  />
-                  {imagePreview ? (
-                    <div>
-                      <img 
-                        src={imagePreview} 
-                        alt="Preview" 
-                        style={{
-                          maxWidth: '100%',
-                          maxHeight: '200px',
-                          borderRadius: 'var(--radius-sm)',
-                          objectFit: 'cover'
-                        }}
-                      />
-                      <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '8px' }}>
-                        Klik atau drag untuk mengganti gambar
-                      </p>
-                    </div>
-                  ) : (
-                    <div>
-                      <i className="fas fa-cloud-upload-alt" style={{ fontSize: '40px', color: 'var(--teal)' }}></i>
-                      <p style={{ marginTop: '8px', color: 'var(--text-muted)' }}>
-                        Klik atau drag & drop gambar di sini
-                      </p>
-                      <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-                        Format: JPG, PNG, GIF
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div style={{ marginBottom: '24px' }}>
-                <label style={{ display: 'block', fontWeight: '600', marginBottom: '6px' }}>
-                  Deskripsi *
-                </label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  required
-                  rows="4"
-                  style={{
-                    width: '100%',
-                    padding: '10px 14px',
-                    border: '1px solid var(--sky-blue)',
-                    borderRadius: 'var(--radius-sm)',
-                    fontFamily: 'inherit',
-                    fontSize: '14px',
-                    resize: 'vertical'
-                  }}
-                />
-              </div>
-
-              <div style={{ display: 'flex', gap: '12px' }}>
-                <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>
-                  {editingSpot ? 'Update Spot' : 'Tambah Spot'}
-                </button>
-                <button type="button" className="btn btn-outline" onClick={closeModal}>
-                  Batal
-                </button>
-              </div>
-            </form>
+                <Button type="submit" variant="primary" fullWidth>
+                  Masuk
+                </Button>
+              </form>
+              <p className="manage-login-hint">
+                * Kode developer hanya diketahui oleh 4 anggota kelompok
+              </p>
+            </div>
           </div>
         </div>
-      )}
+      </div>
+    );
+  }
 
-      {/* Developer Mode Toggle */}
-      <div style={{
-        marginTop: '30px',
-        padding: '20px',
-        background: 'var(--beige-light)',
-        borderRadius: 'var(--radius-sm)',
-        border: '1px solid var(--beige)'
-      }}>
-        <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0 }}>
-          <i className="fas fa-info-circle" style={{ color: 'var(--teal)' }}></i>
-          Halaman ini hanya dapat diakses oleh developer. 
-          Untuk mengaktifkan mode developer, buka Console (F12) dan jalankan:
-          <br />
-          <code style={{
-            background: 'var(--navy)',
-            color: 'var(--white)',
-            padding: '4px 12px',
-            borderRadius: '4px',
-            display: 'inline-block',
-            marginTop: '8px',
-            fontSize: '13px'
-          }}>
-            localStorage.setItem('isDeveloper', 'true') &rarr; lalu refresh halaman
-          </code>
-        </p>
+  // Tampilan utama Manage Spot (sama seperti sebelumnya)
+  return (
+    <div className="manage-page">
+      <div className="manage-container">
+        {/* Header dengan Logout */}
+        <div className="manage-header">
+          <div>
+            <h1 className="manage-title">Kelola Spot Wisata</h1>
+            <p className="manage-subtitle">
+              Tambah, edit, atau hapus data spot wisata di Kabupaten Sumedang
+            </p>
+          </div>
+          <div className="manage-header-actions">
+            <Button variant="outline" size="small" onClick={handleLogout} icon="🚪">
+              Logout
+            </Button>
+            <Button variant="primary" onClick={handleAdd} icon="+">
+              Tambah Spot
+            </Button>
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="manage-stats">
+          <div className="manage-stat">
+            <span className="manage-stat-value">{spots.length}</span>
+            <span className="manage-stat-label">Total Spot</span>
+          </div>
+          <div className="manage-stat">
+            <span className="manage-stat-value">
+              {spots.filter(s => s.rating > 4).length}
+            </span>
+            <span className="manage-stat-label">Rating Tinggi</span>
+          </div>
+          <div className="manage-stat">
+            <span className="manage-stat-value">
+              {spots.filter(s => s.rating < 3 && s.rating > 0).length}
+            </span>
+            <span className="manage-stat-label">Hidden Gems</span>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div className="manage-table-wrap">
+          {loading ? (
+            <div className="manage-loading">
+              <div className="manage-loading-spinner"></div>
+              <p>Memuat data...</p>
+            </div>
+          ) : spots.length === 0 ? (
+            <div className="manage-empty">
+              <div className="manage-empty-icon">🗺️</div>
+              <h3>Belum Ada Data Spot</h3>
+              <p>Klik tombol "Tambah Spot" untuk menambahkan data wisata pertama.</p>
+            </div>
+          ) : (
+            <table className="manage-table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Gambar</th>
+                  <th>Nama Spot</th>
+                  <th>Kategori</th>
+                  <th>Lokasi</th>
+                  <th>Harga</th>
+                  <th>Rating</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {spots.map((spot, index) => (
+                  <tr key={spot.id}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <img 
+                        src={spot.image || 'https://via.placeholder.com/50/2F4156/FFFFFF?text=No+Img'} 
+                        alt={spot.name}
+                        className="manage-table-img"
+                        onError={(e) => {
+                          e.target.src = 'https://via.placeholder.com/50/2F4156/FFFFFF?text=No+Img';
+                        }}
+                      />
+                    </td>
+                    <td className="manage-table-name">{spot.name}</td>
+                    <td>
+                      <span className="manage-table-category">{spot.category || '-'}</span>
+                    </td>
+                    <td>{spot.location || '-'}</td>
+                    <td>{formatHarga(spot.price)}</td>
+                    <td>
+                      <span className="manage-table-rating">
+                        {spot.rating > 0 ? `⭐ ${spot.rating}` : '-'}
+                      </span>
+                    </td>
+                    <td>
+                      <div className="manage-table-actions">
+                        <Button 
+                          variant="outline" 
+                          size="small" 
+                          onClick={() => handleEdit(spot)}
+                          icon="✏️"
+                        >
+                          Edit
+                        </Button>
+                        <Button 
+                          variant="danger" 
+                          size="small" 
+                          onClick={() => handleDelete(spot)}
+                          icon="🗑️"
+                        >
+                          Hapus
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        {/* Form Modal */}
+        {isFormOpen && (
+          <div className="manage-form-overlay" onClick={handleFormCancel}>
+            <div className="manage-form-modal" onClick={(e) => e.stopPropagation()}>
+              <div className="manage-form-header">
+                <h2>{editingSpot ? 'Edit Spot' : 'Tambah Spot Baru'}</h2>
+                <button className="manage-form-close" onClick={handleFormCancel}>
+                  ✕
+                </button>
+              </div>
+              <SpotForm
+                initialData={editingSpot}
+                onSubmit={handleFormSubmit}
+                onCancel={handleFormCancel}
+                isSubmitting={isSubmitting}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={confirmDelete}
+          title="Hapus Spot Wisata"
+          message={`Apakah Anda yakin ingin menghapus "${deleteTarget?.name}"? Data yang dihapus tidak dapat dikembalikan.`}
+          confirmText="Hapus"
+          cancelText="Batal"
+          type="danger"
+        />
+
+        {/* Developer Info */}
+        <div className="manage-dev-info">
+          <p>
+            <span className="manage-dev-icon">👤</span>
+            Login sebagai: <strong>{localStorage.getItem('developerCode')}</strong>
+          </p>
+          <p className="manage-dev-hint">
+            Klik Logout untuk keluar dari mode developer.
+          </p>
+        </div>
       </div>
     </div>
   );

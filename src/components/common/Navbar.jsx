@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDeveloper, setIsDeveloper] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Cek apakah user adalah developer (bisa diatur via localStorage)
-  const isDeveloper = localStorage.getItem('isDeveloper') === 'true';
+  // Cek status developer
+  useEffect(() => {
+    const checkDeveloper = () => {
+      const code = localStorage.getItem('developerCode');
+      const validCodes = ['ILYAS2024', 'RESTY2024', 'INDRI2024', 'DISTI2024'];
+      setIsDeveloper(code && validCodes.includes(code));
+    };
+    
+    checkDeveloper();
+    // Listen for storage changes
+    window.addEventListener('storage', checkDeveloper);
+    return () => window.removeEventListener('storage', checkDeveloper);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -37,7 +49,7 @@ const Navbar = () => {
               <path d="M3 20l6-11 4 7 3-5 5 9H3z"/>
             </svg>
           </div>
-          <div className="logo-text">JejakLensa<span>.</span> <span>Sumedang</span></div>
+          <div className="logo-text">SpotFinder<span>.</span> <span>Sumedang</span></div>
         </Link>
 
         {/* Desktop Menu */}
@@ -57,7 +69,7 @@ const Navbar = () => {
           <input
             type="text"
             name="search"
-            placeholder="Cari spot foto..."
+            placeholder="Cari tempat wisata..."
             className="search-input"
           />
           <button type="submit" className="search-btn">
@@ -92,7 +104,7 @@ const Navbar = () => {
             <input
               type="text"
               name="search"
-              placeholder="Cari spot foto..."
+              placeholder="Cari tempat wisata..."
               className="mobile-search-input"
             />
             <button type="submit" className="mobile-search-btn">

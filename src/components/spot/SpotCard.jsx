@@ -1,5 +1,6 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../../styles/search.css"; // ← Perbaiki path
 
 const SpotCard = ({ spot }) => {
   const navigate = useNavigate();
@@ -8,51 +9,70 @@ const SpotCard = ({ spot }) => {
     navigate(`/spot/${spot.id}`);
   };
 
-  const handleImageError = (e) => {
-    e.target.src = 'https://via.placeholder.com/600x400/2F4156/FFFFFF?text=SpotFinder';
+  // Format harga
+  const formatHarga = (harga) => {
+    if (!harga) return "Gratis";
+    const cleanHarga = harga.replace(/[^0-9]/g, '');
+    if (!cleanHarga) return "Gratis";
+    if (cleanHarga === '0') return "Gratis";
+    return `Rp ${parseInt(cleanHarga).toLocaleString("id-ID")}`;
   };
+
+  // Cek apakah gratis
+  const isGratis = spot.price === 'Gratis' || spot.price === 'Rp0' || spot.price === '0';
+
+  // Fasilitas (fallback jika tidak ada)
+  const fasilitas = spot.fasilitas || ['WiFi', 'Parkir', 'Toilet'];
+
+  // Ambil 3 fasilitas pertama
+  const fasilitasTampil = fasilitas.slice(0, 3);
+  const sisaFasilitas = fasilitas.length - 3;
+
+  // Waktu terbaik (fallback)
+  const waktuTerbaik = spot.waktuTerbaik || 'Pagi - Sore';
+
+  // Jam operasional (fallback)
+  const jamOperasional = spot.jamOperasional || '08.00 - 17.00';
 
   return (
     <div className="spot-card" onClick={handleClick}>
-      <div className="spot-img">
+      <div className="spot-card-img-wrap">
         <img
-          src={spot.image}
+          src={spot.image || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'}
           alt={spot.name}
-          onError={handleImageError}
-          loading="lazy"
+          className="spot-card-img"
+          onError={(e) =>
+            (e.target.src =
+              "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60")
+          }
         />
-        <div className="spot-img-overlay"></div>
-        <span className="spot-tag">{spot.category}</span>
-        <div className="spot-rating">
-          <i className="fas fa-star"></i>
-          {spot.rating}
-        </div>
+        <span className="spot-card-score">
+          <span className="score-star">★</span>
+          {spot.rating || 0}
+        </span>
+        <span className="spot-card-waktu">⏱ {waktuTerbaik}</span>
+        <span className="spot-card-kategori">{spot.category || 'Wisata'}</span>
       </div>
 
-      <div className="spot-body">
-        <h3>{spot.name}</h3>
-        <div className="spot-loc">
-          <i className="fas fa-map-marker-alt"></i>
-          {spot.location}
+      <div className="spot-card-body">
+        <h3 className="spot-card-nama">{spot.name}</h3>
+        <p className="spot-card-lokasi">📍 {spot.location || 'Sumedang'}</p>
+        <p className="spot-card-desc">{spot.description || 'Destinasi wisata menarik di Sumedang'}</p>
+
+        <div className="spot-card-fasilitas">
+          {fasilitasTampil.map((f) => (
+            <span key={f} className="fasilitas-tag">{f}</span>
+          ))}
+          {sisaFasilitas > 0 && (
+            <span className="fasilitas-tag">+{sisaFasilitas}</span>
+          )}
         </div>
-        <p style={{
-          fontSize: '13px',
-          color: 'var(--text-muted)',
-          marginBottom: '12px',
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden'
-        }}>
-          {spot.description}
-        </p>
-        <div className="spot-foot">
-          <span className="spot-price">
-            Tiket <b>{spot.price}</b>
+
+        <div className="spot-card-footer">
+          <span className={`spot-card-harga ${isGratis ? "gratis" : ""}`}>
+            {isGratis ? "Gratis" : formatHarga(spot.price)}
           </span>
-          <div className="spot-arrow">
-            <i className="fas fa-arrow-right"></i>
-          </div>
+          <span className="spot-card-jam">🕐 {jamOperasional}</span>
         </div>
       </div>
     </div>
