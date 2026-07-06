@@ -75,4 +75,4 @@ Fitur	Deskripsi
     UI Modern & Responsif :	Tema Neobrutalism dengan gradien, bayangan, dan animasi halus.
 
     Link Deploy Netlify:
-    https://travelwiseapp.netlify.app/ 
+    https://app-travelwise.netlify.app/ 

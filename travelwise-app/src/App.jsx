@@ -63,7 +63,8 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>🌍 TravelWise</h1>
+        <div className="logo-text">TW</div>
+        <h1>TravelWise</h1>
         <p>Kelola Destinasi Wisata Luar Negeri Anda</p>
       </header>
 
