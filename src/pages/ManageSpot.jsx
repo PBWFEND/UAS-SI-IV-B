@@ -15,51 +15,21 @@ const ManageSpot = () => {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showLogin, setShowLogin] = useState(true);
-  const [developerCode, setDeveloperCode] = useState('');
 
-  // KODE UNIK UNTUK 4 ANGGOTA KELOMPOK
-  // Ganti dengan kode yang kalian sepakati!
-  const VALID_DEVELOPER_CODES = [
-    'ILYAS2024',   // Kode Ilyas
-    'RESTY2024',   // Kode Resty
-    'INDRI2024',   // Kode Indri
-    'DISTI2024'    // Kode Disti
-  ];
+  // CEK LOCAL STORAGE dengan NAMA (tanpa angka)
+  const isDeveloper = 
+    localStorage.getItem('ILYAS') === 'true' ||
+    localStorage.getItem('RESTY') === 'true' ||
+    localStorage.getItem('INDRI') === 'true' ||
+    localStorage.getItem('DISTI') === 'true';
 
-  // Cek apakah user sudah login sebagai developer
   useEffect(() => {
-    const savedCode = localStorage.getItem('developerCode');
-    if (savedCode && VALID_DEVELOPER_CODES.includes(savedCode)) {
-      setIsAuthenticated(true);
-      setShowLogin(false);
-      loadSpots();
-    } else {
-      setIsAuthenticated(false);
-      setShowLogin(true);
-      setLoading(false);
+    if (!isDeveloper) {
+      navigate('/');
+      return;
     }
-  }, []);
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (VALID_DEVELOPER_CODES.includes(developerCode)) {
-      localStorage.setItem('developerCode', developerCode);
-      setIsAuthenticated(true);
-      setShowLogin(false);
-      loadSpots();
-    } else {
-      alert('Kode developer tidak valid!');
-    }
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('developerCode');
-    setIsAuthenticated(false);
-    setShowLogin(true);
-    setDeveloperCode('');
-  };
+    loadSpots();
+  }, [isDeveloper, navigate]);
 
   const loadSpots = () => {
     const allSpots = getSpots();
@@ -117,46 +87,13 @@ const ManageSpot = () => {
     return harga;
   };
 
-  // Tampilkan halaman login jika belum login
-  if (showLogin) {
-    return (
-      <div className="manage-page">
-        <div className="manage-container">
-          <div className="manage-login-wrap">
-            <div className="manage-login-card">
-              <div className="manage-login-icon">🔐</div>
-              <h2 className="manage-login-title">Akses Developer</h2>
-              <p className="manage-login-sub">
-                Masukkan kode developer untuk mengelola data spot wisata.
-              </p>
-              <form onSubmit={handleLogin} className="manage-login-form">
-                <input
-                  type="password"
-                  className="manage-login-input"
-                  placeholder="Masukkan kode developer..."
-                  value={developerCode}
-                  onChange={(e) => setDeveloperCode(e.target.value)}
-                  autoFocus
-                />
-                <Button type="submit" variant="primary" fullWidth>
-                  Masuk
-                </Button>
-              </form>
-              <p className="manage-login-hint">
-                * Kode developer hanya diketahui oleh 4 anggota kelompok
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  if (!isDeveloper) {
+    return null;
   }
 
-  // Tampilan utama Manage Spot (sama seperti sebelumnya)
   return (
     <div className="manage-page">
       <div className="manage-container">
-        {/* Header dengan Logout */}
         <div className="manage-header">
           <div>
             <h1 className="manage-title">Kelola Spot Wisata</h1>
@@ -164,17 +101,11 @@ const ManageSpot = () => {
               Tambah, edit, atau hapus data spot wisata di Kabupaten Sumedang
             </p>
           </div>
-          <div className="manage-header-actions">
-            <Button variant="outline" size="small" onClick={handleLogout} icon="🚪">
-              Logout
-            </Button>
-            <Button variant="primary" onClick={handleAdd} icon="+">
-              Tambah Spot
-            </Button>
-          </div>
+          <Button variant="primary" onClick={handleAdd} icon="+">
+            Tambah Spot
+          </Button>
         </div>
 
-        {/* Stats */}
         <div className="manage-stats">
           <div className="manage-stat">
             <span className="manage-stat-value">{spots.length}</span>
@@ -194,7 +125,6 @@ const ManageSpot = () => {
           </div>
         </div>
 
-        {/* Table */}
         <div className="manage-table-wrap">
           {loading ? (
             <div className="manage-loading">
@@ -273,7 +203,6 @@ const ManageSpot = () => {
           )}
         </div>
 
-        {/* Form Modal */}
         {isFormOpen && (
           <div className="manage-form-overlay" onClick={handleFormCancel}>
             <div className="manage-form-modal" onClick={(e) => e.stopPropagation()}>
@@ -293,7 +222,6 @@ const ManageSpot = () => {
           </div>
         )}
 
-        {/* Delete Confirmation Modal */}
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -305,14 +233,13 @@ const ManageSpot = () => {
           type="danger"
         />
 
-        {/* Developer Info */}
         <div className="manage-dev-info">
           <p>
             <span className="manage-dev-icon">👤</span>
-            Login sebagai: <strong>{localStorage.getItem('developerCode')}</strong>
+            Mode Developer Aktif
           </p>
           <p className="manage-dev-hint">
-            Klik Logout untuk keluar dari mode developer.
+            Untuk menonaktifkan: <code>localStorage.removeItem('NAMA_KAMU')</code>
           </p>
         </div>
       </div>

@@ -1,3 +1,4 @@
+// src/components/Navbar.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -7,18 +8,38 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Cek status developer
   useEffect(() => {
-    const checkDeveloper = () => {
-      const code = localStorage.getItem('developerCode');
-      const validCodes = ['ILYAS2024', 'RESTY2024', 'INDRI2024', 'DISTI2024'];
-      setIsDeveloper(code && validCodes.includes(code));
+    const checkDeveloperStatus = () => {
+      const userData = localStorage.getItem('user');
+      const role = localStorage.getItem('role');
+      
+      if (userData) {
+        try {
+          const user = JSON.parse(userData);
+          if (user.role === 'developer' || user.role === 'admin') {
+            setIsDeveloper(true);
+            return;
+          }
+        } catch (e) {}
+      }
+
+      if (role === 'developer' || role === 'admin') {
+        setIsDeveloper(true);
+        return;
+      }
+
+      const isDev = 
+        localStorage.getItem('ILYAS') === 'true' ||
+        localStorage.getItem('RESTY') === 'true' ||
+        localStorage.getItem('INDRI') === 'true' ||
+        localStorage.getItem('DISTI') === 'true';
+      
+      setIsDeveloper(isDev);
     };
     
-    checkDeveloper();
-    // Listen for storage changes
-    window.addEventListener('storage', checkDeveloper);
-    return () => window.removeEventListener('storage', checkDeveloper);
+    checkDeveloperStatus();
+    window.addEventListener('storage', checkDeveloperStatus);
+    return () => window.removeEventListener('storage', checkDeveloperStatus);
   }, []);
 
   const toggleMenu = () => {
@@ -42,21 +63,20 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        {/* Logo */}
         <Link to="/" className="navbar-logo">
           <div className="logo-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 20l6-11 4 7 3-5 5 9H3z"/>
             </svg>
           </div>
           <div className="logo-text">SpotFinder<span>.</span> <span>Sumedang</span></div>
         </Link>
 
-        {/* Desktop Menu */}
         <div className="navbar-menu">
           <Link to="/" className={`nav-link ${isActive('/')}`}>Beranda</Link>
           <Link to="/search" className={`nav-link ${isActive('/search')}`}>Jelajahi</Link>
-          <Link to="/review" className={`nav-link ${isActive('/review')}`}>Ulasan</Link>
+          {/* ✅ HAPUS LINK REVIEW */}
+          {/* <Link to="/review" className={`nav-link ${isActive('/review')}`}>Ulasan</Link> */}
           {isDeveloper && (
             <Link to="/manage" className={`nav-link ${isActive('/manage')}`}>
               <i className="fas fa-cog"></i> Kelola Spot
@@ -64,7 +84,6 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Search Bar */}
         <form onSubmit={handleSearch} className="navbar-search">
           <input
             type="text"
@@ -77,13 +96,11 @@ const Navbar = () => {
           </button>
         </form>
 
-        {/* Mobile Menu Toggle */}
         <button className="menu-toggle" onClick={toggleMenu} aria-label="Toggle menu">
           <i className={`fas ${isMenuOpen ? 'fa-times' : 'fa-bars'}`}></i>
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="mobile-menu">
           <Link to="/" className="mobile-link" onClick={toggleMenu}>
@@ -92,9 +109,10 @@ const Navbar = () => {
           <Link to="/search" className="mobile-link" onClick={toggleMenu}>
             <i className="fas fa-compass"></i> Jelajahi
           </Link>
-          <Link to="/review" className="mobile-link" onClick={toggleMenu}>
+          {/* ✅ HAPUS LINK REVIEW DI MOBILE MENU */}
+          {/* <Link to="/review" className="mobile-link" onClick={toggleMenu}>
             <i className="fas fa-star"></i> Ulasan
-          </Link>
+          </Link> */}
           {isDeveloper && (
             <Link to="/manage" className="mobile-link" onClick={toggleMenu}>
               <i className="fas fa-cog"></i> Kelola Spot

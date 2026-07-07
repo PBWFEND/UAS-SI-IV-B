@@ -7,9 +7,13 @@ const Footer = () => {
 
   useEffect(() => {
     const checkDeveloper = () => {
-      const code = localStorage.getItem('developerCode');
-      const validCodes = ['ILYAS2024', 'RESTY2024', 'INDRI2024', 'DISTI2024'];
-      setIsDeveloper(code && validCodes.includes(code));
+      const isDev = 
+        localStorage.getItem('ILYAS') === 'true' ||
+        localStorage.getItem('RESTY') === 'true' ||
+        localStorage.getItem('INDRI') === 'true' ||
+        localStorage.getItem('DISTI') === 'true';
+      
+      setIsDeveloper(isDev);
     };
     
     checkDeveloper();
@@ -55,6 +59,7 @@ const Footer = () => {
               <h4>Tentang</h4>
               <Link to="/about">Tentang Kami</Link>
               <Link to="/contact">Kontak</Link>
+              {/* KELOLA SPOT - Muncul di footer hanya jika developer */}
               {isDeveloper && (
                 <Link to="/manage">
                   <i className="fas fa-cog"></i> Kelola Spot

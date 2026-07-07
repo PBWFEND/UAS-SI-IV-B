@@ -46,7 +46,6 @@ const SpotForm = ({
       ...prev,
       [name]: value
     }));
-    // Clear error for this field
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -58,17 +57,31 @@ const SpotForm = ({
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        setErrors(prev => ({
+          ...prev,
+          image: 'Ukuran file maksimal 2MB'
+        }));
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64String = reader.result;
         setFormData(prev => ({
           ...prev,
-          image: base64String
+          image: reader.result
         }));
-        setImagePreview(base64String);
+        setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const removeImage = () => {
+    setImagePreview(null);
+    setFormData(prev => ({
+      ...prev,
+      image: ''
+    }));
   };
 
   const validate = () => {
@@ -85,7 +98,6 @@ const SpotForm = ({
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     if (!validate()) return;
 
     const submitData = {
@@ -98,85 +110,127 @@ const SpotForm = ({
     onSubmit(submitData);
   };
 
+  const categoryOptions = [
+    { value: 'Alam', icon: '🌄', color: '#48bb78' },
+    { value: 'Sejarah', icon: '🏛️', color: '#ed8936' },
+    { value: 'Kuliner', icon: '🍽️', color: '#f56565' },
+    { value: 'Budaya', icon: '🎭', color: '#9f7aea' },
+    { value: 'Religi', icon: '⛪', color: '#4299e1' },
+    { value: 'Buatan', icon: '🎡', color: '#ed64a6' }
+  ];
+
   return (
     <form className="spot-form" onSubmit={handleSubmit}>
-      <div className="spot-form-grid">
+      {/* Header Form */}
+      <div className="spot-form-header-modern">
+        <div className="spot-form-header-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <h3 className="spot-form-title-modern">
+            {initialData ? '✏️ Edit Spot Wisata' : '✨ Tambah Spot Baru'}
+          </h3>
+          <p className="spot-form-subtitle-modern">
+            {initialData ? 'Perbarui data spot wisata' : 'Isi data spot wisata baru'}
+          </p>
+        </div>
+      </div>
+
+      <div className="spot-form-grid-modern">
         {/* Nama Spot */}
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group-modern">
+          <label className="form-label-modern">
             Nama Spot <span className="form-required">*</span>
           </label>
-          <input
-            type="text"
-            name="name"
-            className={`form-input ${errors.name ? 'form-input-error' : ''}`}
-            placeholder="Masukkan nama spot wisata"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          {errors.name && <span className="form-error">{errors.name}</span>}
+          <div className="form-input-wrap-modern">
+            <span className="form-input-icon-modern">📍</span>
+            <input
+              type="text"
+              name="name"
+              className={`form-input-modern ${errors.name ? 'form-input-error' : ''}`}
+              placeholder="Masukkan nama spot wisata"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </div>
+          {errors.name && <span className="form-error-modern">{errors.name}</span>}
         </div>
 
         {/* Kategori */}
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group-modern">
+          <label className="form-label-modern">
             Kategori <span className="form-required">*</span>
           </label>
-          <select
-            name="category"
-            className={`form-select ${errors.category ? 'form-input-error' : ''}`}
-            value={formData.category}
-            onChange={handleChange}
-          >
-            <option value="">Pilih Kategori</option>
-            <option value="Alam">Alam</option>
-            <option value="Sejarah">Sejarah</option>
-            <option value="Kuliner">Kuliner</option>
-            <option value="Budaya">Budaya</option>
-            <option value="Religi">Religi</option>
-            <option value="Buatan">Buatan</option>
-          </select>
-          {errors.category && <span className="form-error">{errors.category}</span>}
+          <div className="form-input-wrap-modern">
+            <span className="form-input-icon-modern">📂</span>
+            <select
+              name="category"
+              className={`form-select-modern ${errors.category ? 'form-input-error' : ''}`}
+              value={formData.category}
+              onChange={handleChange}
+            >
+              <option value="">Pilih Kategori</option>
+              {categoryOptions.map(cat => (
+                <option key={cat.value} value={cat.value}>
+                  {cat.icon} {cat.value}
+                </option>
+              ))}
+            </select>
+          </div>
+          {errors.category && <span className="form-error-modern">{errors.category}</span>}
         </div>
 
         {/* Lokasi */}
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group-modern">
+          <label className="form-label-modern">
             Lokasi <span className="form-required">*</span>
           </label>
-          <input
-            type="text"
-            name="location"
-            className={`form-input ${errors.location ? 'form-input-error' : ''}`}
-            placeholder="Contoh: Kec. Sumedang Selatan"
-            value={formData.location}
-            onChange={handleChange}
-          />
-          {errors.location && <span className="form-error">{errors.location}</span>}
+          <div className="form-input-wrap-modern">
+            <span className="form-input-icon-modern">🗺️</span>
+            <input
+              type="text"
+              name="location"
+              className={`form-input-modern ${errors.location ? 'form-input-error' : ''}`}
+              placeholder="Contoh: Kec. Sumedang Selatan"
+              value={formData.location}
+              onChange={handleChange}
+            />
+          </div>
+          {errors.location && <span className="form-error-modern">{errors.location}</span>}
         </div>
 
         {/* Harga */}
-        <div className="form-group">
-          <label className="form-label">
+        <div className="form-group-modern">
+          <label className="form-label-modern">
             Harga Tiket <span className="form-required">*</span>
           </label>
-          <input
-            type="text"
-            name="price"
-            className={`form-input ${errors.price ? 'form-input-error' : ''}`}
-            placeholder="Contoh: Rp15.000 atau Gratis"
-            value={formData.price}
-            onChange={handleChange}
-          />
-          {errors.price && <span className="form-error">{errors.price}</span>}
+          <div className="form-input-wrap-modern">
+            <span className="form-input-icon-modern">💰</span>
+            <input
+              type="text"
+              name="price"
+              className={`form-input-modern ${errors.price ? 'form-input-error' : ''}`}
+              placeholder="Contoh: Rp15.000 atau Gratis"
+              value={formData.price}
+              onChange={handleChange}
+            />
+          </div>
+          {errors.price && <span className="form-error-modern">{errors.price}</span>}
         </div>
 
-        {/* Upload Gambar */}
-        <div className="form-group form-group-full">
-          <label className="form-label">Upload Gambar</label>
+        {/* Upload Gambar - Full Width */}
+        <div className="form-group-modern form-group-full-modern">
+          <label className="form-label-modern">
+            Upload Gambar
+            <span className="form-label-badge-modern">Opsional</span>
+          </label>
           <div 
-            className={`form-upload ${imagePreview ? 'has-image' : ''}`}
-            onClick={() => document.getElementById('imageUpload').click()}
+            className={`form-upload-modern ${imagePreview ? 'has-image' : ''} ${errors.image ? 'form-upload-error' : ''}`}
+            onClick={() => document.getElementById('imageUploadModern').click()}
             onDragOver={(e) => {
               e.preventDefault();
               e.currentTarget.classList.add('drag-over');
@@ -200,90 +254,128 @@ const SpotForm = ({
           >
             <input
               type="file"
-              id="imageUpload"
+              id="imageUploadModern"
               accept="image/*"
               onChange={handleImageUpload}
               style={{ display: 'none' }}
             />
             {imagePreview ? (
-              <div className="form-upload-preview">
+              <div className="form-upload-preview-modern">
                 <img src={imagePreview} alt="Preview" />
-                <p className="form-upload-hint">Klik atau drag untuk mengganti</p>
+                <div className="form-upload-overlay-modern">
+                  <button 
+                    type="button" 
+                    className="form-upload-remove-modern"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeImage();
+                    }}
+                  >
+                    ✕
+                  </button>
+                  <span className="form-upload-hint-modern">Klik untuk mengganti</span>
+                </div>
               </div>
             ) : (
-              <div className="form-upload-placeholder">
-                <span className="form-upload-icon">📸</span>
-                <p>Klik atau drag & drop gambar di sini</p>
-                <span className="form-upload-hint">Format: JPG, PNG, GIF</span>
+              <div className="form-upload-placeholder-modern">
+                <div className="form-upload-icon-modern">📸</div>
+                <p className="form-upload-text-modern">Klik atau drag & drop gambar di sini</p>
+                <span className="form-upload-hint-modern">Format: JPG, PNG, GIF (Max: 2MB)</span>
               </div>
             )}
           </div>
+          {errors.image && <span className="form-error-modern">{errors.image}</span>}
         </div>
 
-        {/* Deskripsi */}
-        <div className="form-group form-group-full">
-          <label className="form-label">
+        {/* Deskripsi - Full Width */}
+        <div className="form-group-modern form-group-full-modern">
+          <label className="form-label-modern">
             Deskripsi <span className="form-required">*</span>
           </label>
-          <textarea
-            name="description"
-            className={`form-textarea ${errors.description ? 'form-input-error' : ''}`}
-            placeholder="Tulis deskripsi lengkap tentang spot wisata ini..."
-            rows="4"
-            value={formData.description}
-            onChange={handleChange}
-          />
-          {errors.description && <span className="form-error">{errors.description}</span>}
+          <div className="form-input-wrap-modern">
+            <span className="form-input-icon-modern form-textarea-icon-modern">✍️</span>
+            <textarea
+              name="description"
+              className={`form-textarea-modern ${errors.description ? 'form-input-error' : ''}`}
+              placeholder="Tulis deskripsi lengkap tentang spot wisata ini..."
+              rows="4"
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-hint-wrapper-modern">
+            <span className="form-hint-modern">💡 Minimal 20 karakter untuk deskripsi yang informatif</span>
+            <span className="form-counter-modern">{formData.description.length}/1000</span>
+          </div>
+          {errors.description && <span className="form-error-modern">{errors.description}</span>}
         </div>
 
-        {/* Fasilitas */}
-        <div className="form-group form-group-full">
-          <label className="form-label">Fasilitas</label>
-          <input
-            type="text"
-            name="fasilitas"
-            className="form-input"
-            placeholder="Contoh: Parkir, Toilet, Warung Makan (pisahkan dengan koma)"
-            value={formData.fasilitas}
-            onChange={handleChange}
-          />
-          <span className="form-hint">Pisahkan setiap fasilitas dengan tanda koma (,)</span>
+        {/* Fasilitas - Full Width */}
+        <div className="form-group-modern form-group-full-modern">
+          <label className="form-label-modern">
+            Fasilitas
+            <span className="form-label-badge-modern">Opsional</span>
+          </label>
+          <div className="form-input-wrap-modern">
+            <span className="form-input-icon-modern">🎯</span>
+            <input
+              type="text"
+              name="fasilitas"
+              className="form-input-modern"
+              placeholder="Parkir, Toilet, Warung Makan"
+              value={formData.fasilitas}
+              onChange={handleChange}
+            />
+          </div>
+          <span className="form-hint-modern">💡 Pisahkan setiap fasilitas dengan tanda koma (,)</span>
         </div>
 
         {/* Waktu Terbaik */}
-        <div className="form-group">
-          <label className="form-label">Waktu Terbaik</label>
-          <input
-            type="text"
-            name="waktuTerbaik"
-            className="form-input"
-            placeholder="Contoh: Pagi - Sore"
-            value={formData.waktuTerbaik}
-            onChange={handleChange}
-          />
+        <div className="form-group-modern">
+          <label className="form-label-modern">
+            Waktu Terbaik
+            <span className="form-label-badge-modern">Opsional</span>
+          </label>
+          <div className="form-input-wrap-modern">
+            <span className="form-input-icon-modern">⏰</span>
+            <input
+              type="text"
+              name="waktuTerbaik"
+              className="form-input-modern"
+              placeholder="Contoh: Pagi - Sore"
+              value={formData.waktuTerbaik}
+              onChange={handleChange}
+            />
+          </div>
         </div>
 
         {/* Jam Operasional */}
-        <div className="form-group">
-          <label className="form-label">Jam Operasional</label>
-          <input
-            type="text"
-            name="jamOperasional"
-            className="form-input"
-            placeholder="Contoh: 08.00 - 17.00"
-            value={formData.jamOperasional}
-            onChange={handleChange}
-          />
+        <div className="form-group-modern">
+          <label className="form-label-modern">
+            Jam Operasional
+            <span className="form-label-badge-modern">Opsional</span>
+          </label>
+          <div className="form-input-wrap-modern">
+            <span className="form-input-icon-modern">🕐</span>
+            <input
+              type="text"
+              name="jamOperasional"
+              className="form-input-modern"
+              placeholder="Contoh: 08.00 - 17.00"
+              value={formData.jamOperasional}
+              onChange={handleChange}
+            />
+          </div>
         </div>
       </div>
 
       {/* Form Actions */}
-      <div className="form-actions">
+      <div className="form-actions-modern">
         <Button variant="outline" onClick={onCancel} type="button">
-          Batal
+          ✕ Batal
         </Button>
         <Button variant="primary" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? 'Menyimpan...' : initialData ? 'Update Spot' : 'Tambah Spot'}
+          {isSubmitting ? '⏳ Menyimpan...' : initialData ? '💾 Update Spot' : '➕ Tambah Spot'}
         </Button>
       </div>
     </form>
