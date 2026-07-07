@@ -1,4 +1,4 @@
-// src/components/Navbar.jsx
+// src/components/common/Navbar.jsx
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -10,31 +10,14 @@ const Navbar = () => {
 
   useEffect(() => {
     const checkDeveloperStatus = () => {
-      const userData = localStorage.getItem('user');
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
       const role = localStorage.getItem('role');
       
-      if (userData) {
-        try {
-          const user = JSON.parse(userData);
-          if (user.role === 'developer' || user.role === 'admin') {
-            setIsDeveloper(true);
-            return;
-          }
-        } catch (e) {}
-      }
-
-      if (role === 'developer' || role === 'admin') {
+      if (isLoggedIn === 'true' && role === 'developer') {
         setIsDeveloper(true);
-        return;
+      } else {
+        setIsDeveloper(false);
       }
-
-      const isDev = 
-        localStorage.getItem('ILYAS') === 'true' ||
-        localStorage.getItem('RESTY') === 'true' ||
-        localStorage.getItem('INDRI') === 'true' ||
-        localStorage.getItem('DISTI') === 'true';
-      
-      setIsDeveloper(isDev);
     };
     
     checkDeveloperStatus();
@@ -60,6 +43,21 @@ const Navbar = () => {
     return location.pathname === path ? 'active' : '';
   };
 
+  const handleManageClick = (e) => {
+    e.preventDefault();
+    
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const role = localStorage.getItem('role');
+    
+    if (isLoggedIn === 'true' && role === 'developer') {
+      navigate('/manage');
+    } else {
+      navigate('/manage', { state: { showLogin: true } });
+    }
+    
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -69,19 +67,19 @@ const Navbar = () => {
               <path d="M3 20l6-11 4 7 3-5 5 9H3z"/>
             </svg>
           </div>
-          <div className="logo-text">SpotFinder<span>.</span> <span>Sumedang</span></div>
+          <div className="logo-text">JejakLensa<span>.</span> <span>Sumedang</span></div>
         </Link>
 
         <div className="navbar-menu">
           <Link to="/" className={`nav-link ${isActive('/')}`}>Beranda</Link>
           <Link to="/search" className={`nav-link ${isActive('/search')}`}>Jelajahi</Link>
-          {/* ✅ HAPUS LINK REVIEW */}
-          {/* <Link to="/review" className={`nav-link ${isActive('/review')}`}>Ulasan</Link> */}
-          {isDeveloper && (
-            <Link to="/manage" className={`nav-link ${isActive('/manage')}`}>
-              <i className="fas fa-cog"></i> Kelola Spot
-            </Link>
-          )}
+          <Link 
+            to="/manage" 
+            className={`nav-link ${isActive('/manage')}`}
+            onClick={handleManageClick}
+          >
+            <i className="fas fa-cog"></i> Kelola Spot
+          </Link>
         </div>
 
         <form onSubmit={handleSearch} className="navbar-search">
@@ -109,15 +107,13 @@ const Navbar = () => {
           <Link to="/search" className="mobile-link" onClick={toggleMenu}>
             <i className="fas fa-compass"></i> Jelajahi
           </Link>
-          {/* ✅ HAPUS LINK REVIEW DI MOBILE MENU */}
-          {/* <Link to="/review" className="mobile-link" onClick={toggleMenu}>
-            <i className="fas fa-star"></i> Ulasan
-          </Link> */}
-          {isDeveloper && (
-            <Link to="/manage" className="mobile-link" onClick={toggleMenu}>
-              <i className="fas fa-cog"></i> Kelola Spot
-            </Link>
-          )}
+          <Link 
+            to="/manage" 
+            className="mobile-link" 
+            onClick={handleManageClick}
+          >
+            <i className="fas fa-cog"></i> Kelola Spot
+          </Link>
           <form onSubmit={handleSearch} className="mobile-search">
             <input
               type="text"

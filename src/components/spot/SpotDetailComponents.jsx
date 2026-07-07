@@ -1,3 +1,4 @@
+// src/components/spot/SpotDetailComponents.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReviewList from '../review/ReviewList';
@@ -28,7 +29,9 @@ const SpotDetailComponents = () => {
 
   const handleAddReview = (reviewData) => {
     const spotId = parseInt(id);
-    const newReview = addReview(spotId, {
+    
+    const newReview = addReview({
+      spotId: spotId,
       ...reviewData,
       userName: 'Pengguna'
     });
@@ -105,7 +108,7 @@ const SpotDetailComponents = () => {
                 <span className="detail-stat-label">Rating</span>
               </div>
               <div className="detail-stat">
-                <span className="detail-stat-value">{spot.reviews || 0}</span>
+                <span className="detail-stat-value">{reviews.length}</span>
                 <span className="detail-stat-label">Ulasan</span>
               </div>
               <div className="detail-stat">

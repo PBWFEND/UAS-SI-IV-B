@@ -1,47 +1,46 @@
-// Data awal untuk diisi ke local storage oleh developer
-export const initialSpots = [
+// src/data/dummyData.js
+
+const SPOTS_KEY = 'jejakLensa_spots';
+const NEXT_ID_KEY = 'jejakLensa_nextId';
+const REVIEWS_KEY = 'jejakLensa_reviews';
+
+const defaultSpots = [
   {
     id: 1,
     name: 'Gunung Kunci',
     category: 'Alam',
     location: 'Kec. Sumedang Selatan',
-    rating: 4.8,
-    reviews: 120,
     price: 'Rp5.000',
-    image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&h=400&fit=crop',
-    description: 'Spot favorit dengan pemandangan indah dari ketinggian',
-    createdAt: new Date().toISOString(),
-    fasilitas: ['Parkir', 'Toilet', 'Warung Makan', 'Spot Foto'],
+    rating: 5,
+    image: 'https://picsum.photos/400/300?random=1',
+    description: 'Spot wisata alam dengan pemandangan indah yang memukau',
+    fasilitas: ['Parkir', 'Toilet', 'Warung Makan'],
     waktuTerbaik: 'Pagi - Sore',
-    jamOperasional: '06.00 - 17.00'
+    jamOperasional: '08.00 - 17.00'
   },
   {
     id: 2,
     name: 'Cadas Pangeran',
     category: 'Sejarah',
     location: 'Kec. Sumedang Utara',
-    rating: 4.6,
-    reviews: 85,
     price: 'Gratis',
-    image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&h=400&fit=crop',
-    description: 'Situs bersejarah dengan nilai budaya yang tinggi',
-    createdAt: new Date().toISOString(),
-    fasilitas: ['Area Parkir', 'Toilet', 'Gazebo'],
+    rating: 4.6,
+    image: 'https://picsum.photos/400/300?random=2',
+    description: 'Situs sejarah peninggalan kerajaan yang masih terjaga',
+    fasilitas: ['Parkir', 'Toilet'],
     waktuTerbaik: 'Pagi - Siang',
-    jamOperasional: '07.00 - 16.00'
+    jamOperasional: '07.00 - 18.00'
   },
   {
     id: 3,
     name: 'Curug Cinulang',
     category: 'Alam',
-    location: 'Kec. Cimanggung',
-    rating: 4.7,
-    reviews: 70,
-    price: 'Rp15.000',
-    image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=600&h=400&fit=crop',
-    description: 'Air terjun indah dengan suasana yang sejuk dan asri',
-    createdAt: new Date().toISOString(),
-    fasilitas: ['Parkir', 'Toilet', 'Warung Makan', 'Area Camping'],
+    location: 'Kec. Sumedang Selatan',
+    price: 'Rp3.000',
+    rating: 5,
+    image: 'https://picsum.photos/400/300?random=3',
+    description: 'Air terjun dengan keindahan alam yang memukau',
+    fasilitas: ['Parkir', 'Toilet', 'Warung Makan', 'Gazebo'],
     waktuTerbaik: 'Pagi - Sore',
     jamOperasional: '07.00 - 17.00'
   },
@@ -49,126 +48,283 @@ export const initialSpots = [
     id: 4,
     name: 'Bukit Cinta Sumedang',
     category: 'Alam',
-    location: 'Kec. Tanjungsari',
+    location: 'Kec. Sumedang Utara',
+    price: 'Rp10.000',
     rating: 3.8,
-    reviews: 12,
-    price: 'Gratis',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop',
-    description: 'Titik pandang matahari terbenam yang romantis dan masih sepi pengunjung',
-    createdAt: new Date().toISOString(),
-    fasilitas: ['Parkir', 'Spot Foto'],
-    waktuTerbaik: 'Sore - Maghrib',
-    jamOperasional: '08.00 - 18.00'
+    image: 'https://picsum.photos/400/300?random=4',
+    description: 'Bukit dengan pemandangan sunset terbaik di Sumedang',
+    fasilitas: ['Parkir', 'Toilet', 'Kamar Ganti'],
+    waktuTerbaik: 'Sore - Malam',
+    jamOperasional: '06.00 - 21.00'
   },
   {
     id: 5,
     name: 'Curug Ciputrawangi',
     category: 'Alam',
-    location: 'Kec. Buahdua',
+    location: 'Kec. Sumedang Selatan',
+    price: 'Rp2.000',
     rating: 3.5,
-    reviews: 8,
-    price: 'Rp10.000',
-    image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=600&h=400&fit=crop',
-    description: 'Air terjun kecil di tengah hutan pinus, cocok untuk healing dan meditasi',
-    createdAt: new Date().toISOString(),
-    fasilitas: ['Parkir', 'Toilet', 'Area Camping'],
+    image: 'https://picsum.photos/400/300?random=5',
+    description: 'Air terjun tersembunyi di tengah hutan yang sejuk',
+    fasilitas: ['Parkir', 'Toilet'],
     waktuTerbaik: 'Pagi - Siang',
-    jamOperasional: '06.00 - 16.00'
+    jamOperasional: '08.00 - 16.00'
   },
   {
     id: 6,
-    name: 'Situ Talaga Herang',
+    name: 'Kebun Teh Cigugur ',
     category: 'Alam',
-    location: 'Kec. Buahdua',
-    rating: 3.2,
-    reviews: 5,
-    price: 'Rp5.000',
-    image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&h=400&fit=crop',
-    description: 'Danau tenang berwarna hijau tosca yang masih alami dan jarang dikunjungi',
-    createdAt: new Date().toISOString(),
-    fasilitas: ['Parkir', 'Toilet', 'Warung Makan'],
-    waktuTerbaik: 'Pagi - Sore',
-    jamOperasional: '07.00 - 17.00'
+    location: 'Kec. Cigugur',
+    price: 'Rp20.000',
+    rating: 3.5,
+    image: 'https://picsum.photos/400/300?random=5',
+    description: 'Kebun teh yang masih alami ',
+    fasilitas: ['Parkir', 'Toilet'],
+    waktuTerbaik: 'Pagi - Siang',
+    jamOperasional: '08.00 - 16.00'
   }
+
 ];
 
-// ----- INISIALISASI -----
-export const initializeLocalStorage = () => {
-  if (!localStorage.getItem('spots')) {
-    localStorage.setItem('spots', JSON.stringify(initialSpots));
+// ============================================================
+// ===== FUNGSI UNTUK SPOT =====
+// ============================================================
+
+const loadFromStorage = () => {
+  try {
+    const stored = localStorage.getItem(SPOTS_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    return null;
+  } catch (error) {
+    console.error('Error loading from storage:', error);
+    return null;
   }
 };
 
-// ----- GET DATA -----
+const saveToStorage = (data) => {
+  try {
+    localStorage.setItem(SPOTS_KEY, JSON.stringify(data));
+    console.log('✅ Data saved to localStorage:', data.length, 'items');
+  } catch (error) {
+    console.error('Error saving to storage:', error);
+  }
+};
+
+const loadNextIdFromStorage = () => {
+  try {
+    const stored = localStorage.getItem(NEXT_ID_KEY);
+    if (stored) {
+      return parseInt(stored, 10);
+    }
+    return null;
+  } catch (error) {
+    console.error('Error loading nextId from storage:', error);
+    return null;
+  }
+};
+
+const saveNextIdToStorage = (id) => {
+  try {
+    localStorage.setItem(NEXT_ID_KEY, String(id));
+  } catch (error) {
+    console.error('Error saving nextId to storage:', error);
+  }
+};
+
+// ===== INITIALIZE DATA =====
+let spots = loadFromStorage();
+let nextId = loadNextIdFromStorage();
+
+if (!spots || spots.length === 0) {
+  spots = [...defaultSpots];
+  saveToStorage(spots);
+}
+
+if (!nextId) {
+  nextId = spots.length + 1;
+  saveNextIdToStorage(nextId);
+}
+
+// ===== EXPORT FUNCTIONS SPOT =====
 export const getSpots = () => {
-  const spots = localStorage.getItem('spots');
-  return spots ? JSON.parse(spots) : [];
+  // SELALU BACA DARI LOCALSTORAGE
+  const data = loadFromStorage();
+  if (data) {
+    spots = data;
+    return [...spots];
+  }
+  return [...spots];
 };
 
 export const getSpotById = (id) => {
-  const spots = getSpots();
-  return spots.find(spot => spot.id === id) || null;
+  // SELALU BACA DARI LOCALSTORAGE
+  const data = loadFromStorage();
+  if (data) {
+    spots = data;
+  }
+  return spots.find(spot => spot.id === id);
 };
 
-// ----- CREATE -----
 export const addSpot = (spotData) => {
-  const spots = getSpots();
+  // Baca data terbaru dari localStorage
+  let currentSpots = loadFromStorage();
+  let currentNextId = loadNextIdFromStorage();
+  
+  if (!currentSpots) currentSpots = [];
+  if (!currentNextId) currentNextId = spots.length + 1;
+
   const newSpot = {
+    id: currentNextId++,
     ...spotData,
-    id: Date.now(),
     rating: 0,
-    reviews: 0,
-    createdAt: new Date().toISOString()
+    image: spotData.image || `https://picsum.photos/400/300?random=${currentNextId}`
   };
-  spots.push(newSpot);
-  localStorage.setItem('spots', JSON.stringify(spots));
+
+  currentSpots = [...currentSpots, newSpot];
+  
+  // Simpan ke localStorage
+  saveToStorage(currentSpots);
+  saveNextIdToStorage(currentNextId);
+  
+  // Update variable global
+  spots = currentSpots;
+  nextId = currentNextId;
+  
+  console.log('✅ Spot added:', newSpot.name, 'Total:', spots.length);
+  
   return newSpot;
 };
 
-// ----- UPDATE -----
 export const updateSpot = (id, updatedData) => {
-  const spots = getSpots();
-  const index = spots.findIndex(spot => spot.id === id);
-  if (index !== -1) {
-    spots[index] = { ...spots[index], ...updatedData };
-    localStorage.setItem('spots', JSON.stringify(spots));
-    return spots[index];
-  }
-  return null;
+  let currentSpots = loadFromStorage();
+  if (!currentSpots) currentSpots = [];
+
+  currentSpots = currentSpots.map(spot => 
+    spot.id === id ? { ...spot, ...updatedData } : spot
+  );
+  
+  saveToStorage(currentSpots);
+  spots = currentSpots;
+  
+  console.log('✅ Spot updated:', id);
+  
+  return currentSpots.find(spot => spot.id === id);
 };
 
-// ----- DELETE -----
 export const deleteSpot = (id) => {
-  const spots = getSpots();
-  const filtered = spots.filter(spot => spot.id !== id);
-  localStorage.setItem('spots', JSON.stringify(filtered));
+  let currentSpots = loadFromStorage();
+  if (!currentSpots) currentSpots = [];
+
+  currentSpots = currentSpots.filter(spot => spot.id !== id);
+  
+  saveToStorage(currentSpots);
+  spots = currentSpots;
+  
+  console.log('🗑️ Spot deleted:', id, 'Remaining:', spots.length);
 };
 
-// ----- REVIEW -----
-export const addReview = (spotId, reviewData) => {
-  const spots = getSpots();
-  const spot = spots.find(s => s.id === spotId);
-  if (spot) {
-    const reviews = JSON.parse(localStorage.getItem(`reviews_${spotId}`) || '[]');
-    const newReview = {
-      ...reviewData,
-      id: Date.now(),
-      createdAt: new Date().toISOString()
-    };
-    reviews.push(newReview);
-    localStorage.setItem(`reviews_${spotId}`, JSON.stringify(reviews));
-    
-    const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
-    spot.rating = Math.round((totalRating / reviews.length) * 10) / 10;
-    spot.reviews = reviews.length;
-    updateSpot(spotId, { rating: spot.rating, reviews: spot.reviews });
-    
-    return newReview;
+export const resetSpots = () => {
+  spots = [...defaultSpots];
+  nextId = defaultSpots.length + 1;
+  
+  saveToStorage(spots);
+  saveNextIdToStorage(nextId);
+  
+  console.log('✅ Data spot telah direset ke default');
+};
+
+export const clearAllData = () => {
+  localStorage.removeItem(SPOTS_KEY);
+  localStorage.removeItem(NEXT_ID_KEY);
+  localStorage.removeItem(REVIEWS_KEY);
+  spots = [];
+  nextId = 1;
+  console.log('🗑️ Semua data telah dihapus');
+};
+
+export const getStorageInfo = () => {
+  const stored = localStorage.getItem(SPOTS_KEY);
+  const nextIdStored = localStorage.getItem(NEXT_ID_KEY);
+  return {
+    totalData: stored ? JSON.parse(stored).length : 0,
+    nextId: nextIdStored || 'N/A',
+    data: stored ? JSON.parse(stored) : []
+  };
+};
+
+// ============================================================
+// ===== FUNGSI UNTUK REVIEW =====
+// ============================================================
+
+const loadReviewsFromStorage = () => {
+  try {
+    const stored = localStorage.getItem(REVIEWS_KEY);
+    if (stored) {
+      return JSON.parse(stored);
+    }
+    return [];
+  } catch (error) {
+    console.error('Error loading reviews from storage:', error);
+    return [];
   }
-  return null;
+};
+
+const saveReviewsToStorage = (data) => {
+  try {
+    localStorage.setItem(REVIEWS_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.error('Error saving reviews to storage:', error);
+  }
 };
 
 export const getReviews = (spotId) => {
-  const reviews = localStorage.getItem(`reviews_${spotId}`);
-  return reviews ? JSON.parse(reviews) : [];
+  const reviews = loadReviewsFromStorage();
+  if (spotId) {
+    return reviews.filter(review => review.spotId === spotId);
+  }
+  return reviews;
+};
+
+export const addReview = (reviewData) => {
+  const reviews = loadReviewsFromStorage();
+  
+  const newReview = {
+    id: Date.now(),
+    ...reviewData,
+    date: new Date().toISOString()
+  };
+  
+  reviews.push(newReview);
+  saveReviewsToStorage(reviews);
+  
+  // Update rating spot
+  const spotReviews = reviews.filter(r => r.spotId === reviewData.spotId);
+  const avgRating = spotReviews.reduce((acc, r) => acc + r.rating, 0) / spotReviews.length;
+  
+  // Update spot rating di localStorage
+  let currentSpots = loadFromStorage();
+  if (currentSpots) {
+    currentSpots = currentSpots.map(spot => 
+      spot.id === reviewData.spotId 
+        ? { ...spot, rating: Math.round(avgRating * 10) / 10 }
+        : spot
+    );
+    saveToStorage(currentSpots);
+    spots = currentSpots;
+  }
+  
+  return newReview;
+};
+
+export const deleteReview = (reviewId) => {
+  let reviews = loadReviewsFromStorage();
+  reviews = reviews.filter(review => review.id !== reviewId);
+  saveReviewsToStorage(reviews);
+};
+
+export const getReviewsBySpot = (spotId) => {
+  const reviews = loadReviewsFromStorage();
+  return reviews.filter(review => review.spotId === spotId);
 };

@@ -867,3 +867,34 @@
     color: #718096;
   }
 }
+
+/* Tambahkan di manage.css */
+
+.manage-login-back {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  color: #667eea;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.manage-login-back:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  .manage-login-back {
+    color: #9f7aea;
+  }
+  
+  .manage-login-back:hover {
+    color: #b794f4;
+  }
+}

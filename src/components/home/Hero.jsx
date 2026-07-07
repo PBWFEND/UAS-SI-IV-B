@@ -28,7 +28,7 @@ const Hero = () => {
             tersembunyi tanah Sumedang
           </h1>
           <p className="hero-description">
-            Dari perbukitan hijau hingga curug tersembunyi — SpotFinder membantumu menemukan, 
+            Dari perbukitan hijau hingga curug tersembunyi — JejakLensa membantumu menemukan, 
             menilai, dan berbagi tempat terbaik untuk dikunjungi di Sumedang.
           </p>
 

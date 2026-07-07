@@ -32,7 +32,7 @@ const Footer = () => {
                   <path d="M3 20l6-11 4 7 3-5 5 9H3z"/>
                 </svg>
               </div>
-              <div className="footer-logo-text">SpotFinder Sumedang</div>
+              <div className="footer-logo-text">JejakLensa Sumedang</div>
             </div>
             <p className="footer-description">
               Platform pencarian dan eksplorasi tempat wisata terbaik di Kabupaten Sumedang.
@@ -71,7 +71,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <span>&copy; {currentYear} SpotFinder Sumedang. All rights reserved.</span>
+        <span>&copy; {currentYear} JejakLensa Sumedang. All rights reserved.</span>
         <span>Dibangun dengan React &amp; Vite</span>
       </div>
     </footer>

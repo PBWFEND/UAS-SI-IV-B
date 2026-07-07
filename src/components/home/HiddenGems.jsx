@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 // Data Hidden Gems - Hardcode langsung di sini
 const hiddenGemsData = [
   {
-    id: 7,
+    id: 6,
     name: 'Kebun Teh Cigugur',
     category: 'Alam',
     location: 'Kec. Cigugur',
@@ -13,16 +13,16 @@ const hiddenGemsData = [
     description: 'Perkebunan teh yang masih alami dengan pemandangan hijau menenangkan'
   },
   {
-    id: 8,
-    name: 'Situs Candi Ronggeng',
-    category: 'Sejarah',
-    location: 'Kec. Buahdua',
-    price: 'Gratis',
+    id: 7,
+    name: 'Balong Geulis',
+    category: 'Buatan',
+    location: 'Kec. Cibugel',
+    price: 'Rp20.000',
     image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&h=400&fit=crop',
-    description: 'Situs candi kuno dengan nilai sejarah yang tinggi dan masih tersembunyi'
+    description: 'Belum Ada Deskripsi'
   },
   {
-    id: 9,
+    id: 8,
     name: 'Air Terjun Ciputri',
     category: 'Alam',
     location: 'Kec. Cimanggung',

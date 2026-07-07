@@ -1,48 +1,42 @@
+// src/components/review/Rating.jsx
 import React from 'react';
 import '../../styles/review.css';
 
-const Rating = ({ value, onChange, readonly = false, size = 'medium' }) => {
-  const stars = [1, 2, 3, 4, 5];
-  
-  const getSizeClass = () => {
-    switch(size) {
-      case 'small': return 'rating-small';
-      case 'large': return 'rating-large';
-      default: return 'rating-medium';
+const Rating = ({ 
+  rating = 0, 
+  maxRating = 5, 
+  interactive = false,
+  size = 'medium',
+  onRatingChange = null,
+  readonly = false
+}) => {
+  const handleClick = (index) => {
+    if (interactive && onRatingChange) {
+      onRatingChange(index + 1);
     }
   };
 
-  const handleClick = (starValue) => {
-    if (!readonly && onChange) {
-      onChange(starValue);
-    }
+  const handleHover = (index) => {
+    // Untuk efek hover jika diperlukan
   };
 
-  const handleMouseEnter = (starValue) => {
-    if (!readonly && onChange) {
-      // Bisa ditambahkan hover effect jika diperlukan
-    }
+  const sizeClass = {
+    small: 'rating-small',
+    medium: 'rating-medium',
+    large: 'rating-large'
   };
 
-  const handleMouseLeave = () => {
-    if (!readonly && onChange) {
-      // Reset ke value asli jika diperlukan
-    }
-  };
+  const isReadonly = readonly || !interactive;
 
   return (
-    <div className={`rating-wrap ${getSizeClass()} ${readonly ? 'rating-readonly' : 'rating-interactive'}`}>
-      {stars.map((star) => (
+    <div className={`rating-wrap ${!isReadonly ? 'rating-interactive' : ''} ${sizeClass[size] || 'rating-medium'}`}>
+      {[...Array(maxRating)].map((_, index) => (
         <span
-          key={star}
-          className={`rating-star ${star <= value ? 'active' : ''}`}
-          onClick={() => handleClick(star)}
-          onMouseEnter={() => handleMouseEnter(star)}
-          onMouseLeave={handleMouseLeave}
-          style={{
-            cursor: readonly ? 'default' : 'pointer',
-            transition: 'transform 0.15s ease'
-          }}
+          key={index}
+          className={`rating-star ${index < rating ? 'active' : ''}`}
+          onClick={() => handleClick(index)}
+          onMouseEnter={() => handleHover(index)}
+          style={{ cursor: isReadonly ? 'default' : 'pointer' }}
         >
           ★
         </span>
