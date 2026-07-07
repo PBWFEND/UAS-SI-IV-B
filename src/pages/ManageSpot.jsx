@@ -53,7 +53,7 @@ const ManageSpot = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     
-    if (loginCode === 'ILYAS2024') {
+    if (loginCode === 'ILYAS2024', 'INDRI2024'. 'DISTI2024', 'RESTY2024') {
       setIsAuthenticated(true);
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('role', 'developer');
