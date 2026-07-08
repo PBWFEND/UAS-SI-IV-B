@@ -8,3 +8,7 @@ export default defineConfig({
     open: true
   }
 })
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+})
