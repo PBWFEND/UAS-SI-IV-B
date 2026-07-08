@@ -95,7 +95,7 @@ activity-manager/
 3. Tidak memerlukan server atau instalasi apapun
 4. Izinkan notifikasi browser untuk fitur alarm
 
----
+✅ Progress Checklist
 
 ## 🎨 Desain & Teknologi
 
@@ -110,7 +110,7 @@ activity-manager/
   - Warning: `#f5a623` (amber)
   - Danger: `#f55f5f` (coral red)
 
----
+✅ Kalender
 
 ## 🔗 Link Demo
 
