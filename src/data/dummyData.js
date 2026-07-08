@@ -9,7 +9,7 @@ import gunungCiremai from '../assets/images/gunung-ciremai.jpg';
 const SPOTS_KEY = 'jejakLensa_spots';
 const NEXT_ID_KEY = 'jejakLensa_nextId';
 const REVIEWS_KEY = 'jejakLensa_reviews';
-const VERSION_KEY = 'jejakLensa_dataVersion';
+const VERSION_KEY = 'jejakLensa_dataVersion'; add .gitignore
 
 // Naikkan angka ini setiap kali defaultSpots diubah (gambar, data, dll.)
 const DATA_VERSION = 2;
