@@ -1,39 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-// Data Hidden Gems - Hardcode langsung di sini
-const hiddenGemsData = [
-  {
-    id: 6,
-    name: 'Kebun Teh Cigugur',
-    category: 'Alam',
-    location: 'Kec. Cigugur',
-    price: 'Rp5.000',
-    image: 'https://images.unsplash.com/photo-1572624784951-8d8fb7f218e3?w=600&h=400&fit=crop',
-    description: 'Perkebunan teh yang masih alami dengan pemandangan hijau menenangkan'
-  },
-  {
-    id: 7,
-    name: 'Balong Geulis',
-    category: 'Buatan',
-    location: 'Kec. Cibugel',
-    price: 'Rp20.000',
-    image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=600&h=400&fit=crop',
-    description: 'Belum Ada Deskripsi'
-  },
-  {
-    id: 8,
-    name: 'Air Terjun Ciputri',
-    category: 'Alam',
-    location: 'Kec. Cimanggung',
-    price: 'Rp10.000',
-    image: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=600&h=400&fit=crop',
-    description: 'Air terjun tersembunyi di tengah hutan dengan kolam alami yang jernih'
-  }
-];
+import { getSpots } from '../../data/dummyData';
 
 const HiddenGems = () => {
   const navigate = useNavigate();
+  const [hiddenGems, setHiddenGems] = useState([]);
+
+  useEffect(() => {
+    const allSpots = getSpots();
+    // Ambil 3 spot dengan rating terendah (hidden gems)
+    const sorted = [...allSpots].sort((a, b) => (a.rating || 0) - (b.rating || 0));
+    setHiddenGems(sorted.slice(0, 3));
+  }, []);
 
   const handleViewAll = () => {
     navigate('/search?type=hidden-gems');
@@ -45,7 +23,7 @@ const HiddenGems = () => {
 
   // Fungsi untuk handle error gambar
   const handleImageError = (e) => {
-    e.target.src = 'https://via.placeholder.com/600x400/2F4156/FFFFFF?text=Hidden+Gem';
+    e.target.style.display = 'none';
   };
 
   return (
@@ -63,7 +41,7 @@ const HiddenGems = () => {
         </div>
 
         <div className="gems-grid">
-          {hiddenGemsData.map((gem) => (
+          {hiddenGems.map((gem) => (
             <div
               key={gem.id}
               className="gem-card"

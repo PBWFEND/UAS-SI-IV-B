@@ -53,7 +53,9 @@ const ManageSpot = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     
-    if (loginCode === 'DEV2024') {
+    // Perbaikan: gunakan .trim() untuk menghapus spasi yang tidak disengaja 
+    // dan .toUpperCase() agar tidak case-sensitive
+    if (loginCode.trim().toUpperCase() === 'DEV2024') {
       setIsAuthenticated(true);
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('role', 'developer');
@@ -290,11 +292,11 @@ const ManageSpot = () => {
                       <td>{index + 1}</td>
                       <td>
                         <img 
-                          src={spot.image || 'https://via.placeholder.com/50/2F4156/FFFFFF?text=No+Img'} 
+                          src={spot.image} 
                           alt={spot.name || 'Spot'}
                           className="manage-table-img"
                           onError={(e) => {
-                            e.target.src = 'https://via.placeholder.com/50/2F4156/FFFFFF?text=No+Img';
+                            e.target.style.display = 'none';
                           }}
                         />
                       </td>

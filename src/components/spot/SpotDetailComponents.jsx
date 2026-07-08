@@ -82,10 +82,10 @@ const SpotDetailComponents = () => {
         <div className="detail-hero">
           <div className="detail-hero-image">
             <img
-              src={spot.image || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=60'}
+              src={spot.image}
               alt={spot.name}
               onError={(e) => {
-                e.target.src = 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=60';
+                e.target.style.display = 'none';
               }}
             />
             <div className="detail-hero-badge">

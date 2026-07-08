@@ -33,6 +33,8 @@ const SearchSpot = () => {
       const categoryMap = {
         'wisata-alam': 'Alam',
         'wisata-sejarah': 'Sejarah',
+        'alam': 'Alam',
+        'sejarah': 'Sejarah',
         'kuliner': 'Kuliner',
         'budaya': 'Budaya',
         'religi': 'Religi',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from './Button';
 import '../../styles/manage.css';
 
@@ -12,12 +12,26 @@ const Modal = ({
   cancelText = 'Batal',
   type = 'info' // 'info' | 'warning' | 'danger' | 'success'
 }) => {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const getIcon = () => {
     switch(type) {
-      case 'warning': return '⚠️';
-      case 'danger': return '❌';
+      case 'warning': return <i className="fas fa-triangle-exclamation" style={{ color: '#ecc94b' }}></i>;
+      case 'danger': return <i className="fas fa-triangle-exclamation" style={{ color: '#e53e3e' }}></i>;
       case 'success': return '✅';
       default: return 'ℹ️';
     }

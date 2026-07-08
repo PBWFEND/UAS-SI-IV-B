@@ -38,13 +38,12 @@ const SpotCard = ({ spot }) => {
     <div className="spot-card" onClick={handleClick}>
       <div className="spot-card-img-wrap">
         <img
-          src={spot.image || 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60'}
+          src={spot.image}
           alt={spot.name}
           className="spot-card-img"
-          onError={(e) =>
-            (e.target.src =
-              "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=60")
-          }
+          onError={(e) => {
+            e.target.style.display = 'none';
+          }}
         />
         <span className="spot-card-score">
           <span className="score-star">★</span>

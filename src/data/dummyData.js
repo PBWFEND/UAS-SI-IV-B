@@ -1,8 +1,18 @@
 // src/data/dummyData.js
+import gunungKunci from '../assets/images/gunung-kunci.jpg';
+import candiRonggeng from '../assets/images/candi-ronggeng.jpg';
+import curugCikaso from '../assets/images/curug-cikaso.jpg';
+import kebunTeh from '../assets/images/kebun-teh.jpg';
+import airTerjun from '../assets/images/air-terjun.jpg';
+import gunungCiremai from '../assets/images/gunung-ciremai.jpg';
 
 const SPOTS_KEY = 'jejakLensa_spots';
 const NEXT_ID_KEY = 'jejakLensa_nextId';
 const REVIEWS_KEY = 'jejakLensa_reviews';
+const VERSION_KEY = 'jejakLensa_dataVersion';
+
+// Naikkan angka ini setiap kali defaultSpots diubah (gambar, data, dll.)
+const DATA_VERSION = 2;
 
 const defaultSpots = [
   {
@@ -12,7 +22,7 @@ const defaultSpots = [
     location: 'Kec. Sumedang Selatan',
     price: 'Rp5.000',
     rating: 5,
-    image: 'https://picsum.photos/400/300?random=1',
+    image: gunungKunci,
     description: 'Spot wisata alam dengan pemandangan indah yang memukau',
     fasilitas: ['Parkir', 'Toilet', 'Warung Makan'],
     waktuTerbaik: 'Pagi - Sore',
@@ -25,7 +35,7 @@ const defaultSpots = [
     location: 'Kec. Sumedang Utara',
     price: 'Gratis',
     rating: 4.6,
-    image: 'https://picsum.photos/400/300?random=2',
+    image: candiRonggeng,
     description: 'Situs sejarah peninggalan kerajaan yang masih terjaga',
     fasilitas: ['Parkir', 'Toilet'],
     waktuTerbaik: 'Pagi - Siang',
@@ -38,7 +48,7 @@ const defaultSpots = [
     location: 'Kec. Sumedang Selatan',
     price: 'Rp3.000',
     rating: 5,
-    image: 'https://picsum.photos/400/300?random=3',
+    image: curugCikaso,
     description: 'Air terjun dengan keindahan alam yang memukau',
     fasilitas: ['Parkir', 'Toilet', 'Warung Makan', 'Gazebo'],
     waktuTerbaik: 'Pagi - Sore',
@@ -51,7 +61,7 @@ const defaultSpots = [
     location: 'Kec. Sumedang Utara',
     price: 'Rp10.000',
     rating: 3.8,
-    image: 'https://picsum.photos/400/300?random=4',
+    image: gunungCiremai,
     description: 'Bukit dengan pemandangan sunset terbaik di Sumedang',
     fasilitas: ['Parkir', 'Toilet', 'Kamar Ganti'],
     waktuTerbaik: 'Sore - Malam',
@@ -64,7 +74,7 @@ const defaultSpots = [
     location: 'Kec. Sumedang Selatan',
     price: 'Rp2.000',
     rating: 3.5,
-    image: 'https://picsum.photos/400/300?random=5',
+    image: airTerjun,
     description: 'Air terjun tersembunyi di tengah hutan yang sejuk',
     fasilitas: ['Parkir', 'Toilet'],
     waktuTerbaik: 'Pagi - Siang',
@@ -77,7 +87,7 @@ const defaultSpots = [
     location: 'Kec. Cigugur',
     price: 'Rp20.000',
     rating: 3.5,
-    image: 'https://picsum.photos/400/300?random=5',
+    image: kebunTeh,
     description: 'Kebun teh yang masih alami ',
     fasilitas: ['Parkir', 'Toilet'],
     waktuTerbaik: 'Pagi - Siang',
@@ -137,9 +147,26 @@ const saveNextIdToStorage = (id) => {
 let spots = loadFromStorage();
 let nextId = loadNextIdFromStorage();
 
+// Cek versi data — jika defaultSpots berubah, update data default di localStorage
+const storedVersion = localStorage.getItem(VERSION_KEY);
+
 if (!spots || spots.length === 0) {
+  // Belum ada data sama sekali → isi dengan default
   spots = [...defaultSpots];
   saveToStorage(spots);
+  localStorage.setItem(VERSION_KEY, String(DATA_VERSION));
+} else if (parseInt(storedVersion) !== DATA_VERSION) {
+  // Versi berubah → merge: update data default, pertahankan spot user
+  const defaultIds = defaultSpots.map(s => s.id);
+  
+  // Ambil spot yang ditambahkan user (id bukan dari default)
+  const userSpots = spots.filter(s => !defaultIds.includes(s.id));
+  
+  // Gabungkan: default terbaru + spot user
+  spots = [...defaultSpots, ...userSpots];
+  saveToStorage(spots);
+  localStorage.setItem(VERSION_KEY, String(DATA_VERSION));
+  console.log('🔄 Data default diperbarui ke versi', DATA_VERSION);
 }
 
 if (!nextId) {
@@ -179,7 +206,7 @@ export const addSpot = (spotData) => {
     id: currentNextId++,
     ...spotData,
     rating: 0,
-    image: spotData.image || `https://picsum.photos/400/300?random=${currentNextId}`
+    image: spotData.image || ''
   };
 
   currentSpots = [...currentSpots, newSpot];
