@@ -145,7 +145,9 @@ Live Demo
 
 > https://kelompok5-bvod.vercel.app/
 
----
+```bash
+npm run dev
+```
 
 # 📌 Pemenuhan Kriteria UAS
 

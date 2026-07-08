@@ -1,0 +1,464 @@
+/* ============================================================
+   DETAIL SPOT - CSS
+   ============================================================ */
+
+.detail-page {
+  padding: 100px 24px 60px;
+  min-height: 100vh;
+  background: var(--sky-light);
+}
+
+.detail-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ---- Tombol Kembali ---- */
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: var(--text-mid);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px 0;
+  margin-bottom: 20px;
+  transition: color 0.2s;
+}
+
+.detail-back:hover {
+  color: var(--navy);
+}
+
+.detail-back-icon {
+  font-size: 18px;
+}
+
+/* ---- Loading ---- */
+.detail-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+}
+
+.detail-loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--sky);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ---- Not Found ---- */
+.detail-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+  text-align: center;
+}
+
+.detail-not-found-icon {
+  font-size: 64px;
+}
+
+.detail-not-found h2 {
+  font-size: 24px;
+  color: var(--navy);
+}
+
+.detail-not-found p {
+  color: var(--text-mid);
+  margin-bottom: 8px;
+}
+
+/* ---- Hero ---- */
+.detail-hero {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 32px;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--sky);
+  margin-bottom: 32px;
+}
+
+.detail-hero-image {
+  position: relative;
+  overflow: hidden;
+  min-height: 400px;
+  background: var(--navy);
+}
+
+.detail-hero-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.detail-hero-image:hover img {
+  transform: scale(1.03);
+}
+
+.detail-hero-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.detail-hero-category {
+  background: rgba(47, 65, 86, 0.85);
+  color: var(--white);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+.detail-hero-rating {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--navy);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detail-hero-rating .star {
+  color: #e8a020;
+}
+
+.detail-hero-content {
+  padding: 32px 32px 32px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.detail-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--navy);
+  margin: 0;
+}
+
+.detail-location {
+  font-size: 14px;
+  color: var(--text-mid);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-location-icon {
+  font-size: 16px;
+}
+
+/* ---- Stats ---- */
+.detail-stats {
+  display: flex;
+  gap: 24px;
+  padding: 16px 0;
+  border-top: 1px solid var(--sky-light);
+  border-bottom: 1px solid var(--sky-light);
+}
+
+.detail-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail-stat-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.detail-stat-label {
+  font-size: 12px;
+  color: var(--text-soft);
+}
+
+/* ---- Deskripsi ---- */
+.detail-description h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+
+.detail-description p {
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.8;
+}
+
+/* ---- Info Grid ---- */
+.detail-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.detail-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--sky-light);
+  border-radius: var(--radius-sm);
+}
+
+.detail-info-icon {
+  font-size: 18px;
+}
+
+.detail-info-label {
+  display: block;
+  font-size: 11px;
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.detail-info-value {
+  display: block;
+  font-size: 13px;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* ---- Fasilitas ---- */
+.detail-fasilitas h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 10px;
+}
+
+.detail-fasilitas-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.detail-fasilitas-tag {
+  padding: 4px 12px;
+  background: var(--sky-light);
+  color: var(--teal);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--sky);
+}
+
+/* ---- Tabs ---- */
+.detail-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  padding: 4px;
+  border: 1px solid var(--sky);
+  margin-bottom: 24px;
+}
+
+.detail-tab {
+  flex: 1;
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.detail-tab:hover {
+  background: var(--sky-light);
+  color: var(--navy);
+}
+
+.detail-tab.active {
+  background: var(--navy);
+  color: var(--white);
+}
+
+.detail-tab-icon {
+  font-size: 16px;
+}
+
+/* ---- Tab Content ---- */
+.detail-tab-content {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  border: 1px solid var(--sky);
+}
+
+.detail-info-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 12px;
+}
+
+.detail-info-section p {
+  font-size: 14px;
+  color: var(--text-mid);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+
+.detail-info-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.detail-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  background: var(--sky-light);
+  border-radius: var(--radius-sm);
+}
+
+.detail-meta-label {
+  font-size: 11px;
+  color: var(--text-soft);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-meta-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+/* ---- Review Tab ---- */
+.detail-reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.detail-reviews-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.detail-reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.detail-reviews-rating {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.detail-reviews-rating .star {
+  color: #e8a020;
+}
+
+.detail-reviews-count {
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .detail-page {
+    padding: 80px 16px 40px;
+  }
+
+  .detail-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-hero-image {
+    min-height: 250px;
+  }
+
+  .detail-hero-content {
+    padding: 20px;
+  }
+
+  .detail-title {
+    font-size: 22px;
+  }
+
+  .detail-stats {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .detail-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-info-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-tabs {
+    flex-direction: column;
+  }
+
+  .detail-tab-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-hero-image {
+    min-height: 200px;
+  }
+
+  .detail-title {
+    font-size: 20px;
+  }
+
+  .detail-stat-value {
+    font-size: 16px;
+  }
+}
