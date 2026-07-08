@@ -1,191 +1,121 @@
-# 📚 TASKORA - Task Organizer Assistant
+# AktivitasKu — Aplikasi Manajemen Kegiatan
 
-TASKORA (Task Organizer Assistant) merupakan aplikasi berbasis web yang dikembangkan menggunakan React.js dan Vite untuk membantu mahasiswa mengelola tugas kuliah secara lebih terorganisir. Aplikasi ini menerapkan konsep CRUD (Create, Read, Update, Delete) dengan penyimpanan data menggunakan Local Storage sehingga data tetap tersimpan meskipun halaman di-refresh.
-
----
-
-## 👥 Kelompok
-
-| Nama | NIM |
-|------|------|
-| Rahma Nadya | 240160221035 |
-| Putri Indra Lestari Aryanto | 240160221034 |
-| Siti Khodijah | 240160221045 |
-| Nabilla Natasya Putri | 240160221029 |
+> Proyek UAS Mata Kuliah Pemrograman Berbasis Web Front-End  
+> Semester Genap 2025/2026 | Program Studi S1 Sistem Informasi
 
 ---
 
-## 🎓 Mata Kuliah
+## 👥 Identitas Kelompok
 
-**Pemrograman Berbasis Web Front-End**
+Kelompok 1  
+SI IV-B
 
-Program Studi **S1 Sistem Informasi**
+| No | Nama |
+|----|------|
+| 1 | M. Rifqie Jiwara |240160221027
+| 2 | Desfryansyah N.I |240160221023
+| 3 | Rendi Fergian Sukmawan |240160221037
+| 4 | Zhilan Maulana |24010221049
 
----
+link website : https://aktifitasku.netlify.app
 
-# 📖 Deskripsi Aplikasi
-
-TASKORA merupakan aplikasi manajemen tugas yang membantu pengguna dalam mencatat, mengelola, memantau, dan menyelesaikan tugas kuliah secara lebih efektif.
-
-Aplikasi ini dibangun menggunakan **React.js** dengan **Vite** sebagai build tool dan menerapkan konsep **lifting state up**. Seluruh data disimpan menggunakan **Local Storage** sehingga data tetap tersedia walaupun browser ditutup atau halaman di-refresh.
-
----
-
-# ✨ Fitur Aplikasi
-
-## ✅ Create
-- Menambahkan tugas baru
-- Validasi form
-- Input mata kuliah
-- Input judul tugas
-- Input deadline
-- Input prioritas
-
-## ✅ Read
-- Menampilkan seluruh daftar tugas
-- Dashboard ringkasan tugas
-- Deadline terdekat
-- Kalender tugas
-- Statistik tugas
-
-## ✅ Update
-- Checklist penyelesaian tugas
-- Progress bar otomatis berdasarkan checklist
-- Status tugas berubah menjadi selesai ketika checklist telah terpenuhi
-
-## ✅ Delete
-- Menghapus tugas
-- Konfirmasi penghapusan menggunakan `window.confirm()`
+**Dosen:** Yanyan Sofiyan, M.Kom.
 
 ---
 
-# 🔍 Fitur Tambahan
+## 📋 Deskripsi Aplikasi
 
-- 🔎 Search tugas berdasarkan judul
-- 📚 Filter berdasarkan mata kuliah
-- 📌 Filter berdasarkan status (Aktif / Selesai)
-- 📊 Progress Bar
-- 📅 Kalender Deadline
-- 🔔 Notifikasi Deadline Hari Ini
-- 📈 Statistik Tugas
-- 💾 Penyimpanan data menggunakan Local Storage
-- 📱 Responsive User Interface
+**AktivitasKu** adalah aplikasi manajemen kegiatan (activity manager) berbasis web yang dibangun menggunakan HTML, CSS, dan JavaScript murni (tanpa framework). Aplikasi ini dirancang dengan tampilan premium dan modern menggunakan tema gelap (dark theme) yang elegan.
+
+### Latar Belakang
+
+Aplikasi ini lahir dari kebutuhan nyata mahasiswa dan profesional muda yang ingin mengelola kegiatan harian secara terstruktur, tepat waktu, dan tidak melewatkan deadline penting. Dengan fitur notifikasi alarm berbasis browser, pengguna akan selalu diingatkan ketika waktu kegiatan telah tiba.
+
+### Fitur Utama
+
+| Fitur | Deskripsi |
+|-------|-----------|
+| ➕ **Tambah Kegiatan** | Form input lengkap dengan validasi dasar |
+| 📋 **Lihat Kegiatan** | Tampilan grid/list dengan pengelompokan Aktif & Selesai |
+| ✏️ **Edit Kegiatan** | Modal edit penuh untuk mengubah semua properti |
+| 🗑️ **Hapus Kegiatan** | Hapus dengan konfirmasi dialog `window.confirm()` |
+| ✅ **Toggle Status** | Tandai kegiatan sebagai selesai atau aktif kembali |
+| 🔍 **Pencarian Real-time** | Filter kegiatan langsung saat mengetik |
+| 🏷️ **Filter Kategori** | Filter berdasarkan kategori (Personal, Kuliah, Kerja, dll.) |
+| 📊 **Statistik** | Ringkasan jumlah total, aktif, dan selesai di sidebar |
+| 📅 **Progress Bar** | Progress kegiatan hari ini secara visual |
+| ⏰ **Notifikasi Alarm** | Alarm browser + toast saat waktu kegiatan tiba |
+| 🌙 **Jam Digital** | Jam real-time yang selalu terbarui |
+| 🔄 **Sortir Data** | Sortir berdasarkan terbaru, terlama, prioritas, A-Z, atau tanggal |
+| 📱 **Responsif** | Tampilan optimal di desktop, tablet, dan mobile |
+| 💾 **Penyimpanan Lokal** | Data tersimpan di `localStorage`, tidak hilang saat refresh |
 
 ---
 
-# 🗂 Struktur Data
+## 🗂️ Struktur Data
+
+Setiap kegiatan disimpan sebagai objek JavaScript dengan struktur berikut:
 
 ```javascript
 {
-  id: number,
-  matkul: string,
-  judul: string,
-  priority: string,
-  deadline: Date,
-  pengingat: string,
-  deskripsi: string,
-  checklist: [
-    {
-      id: string,
-      label: string,
-      done: boolean
-    }
-  ]
+  id:          string,  // ID unik (timestamp + random)
+  title:       string,  // Nama kegiatan (wajib, maks. 80 karakter)
+  description: string,  // Deskripsi singkat (opsional, maks. 200 karakter)
+  category:    string,  // 'personal' | 'kuliah' | 'kerja' | 'kesehatan' | 'lainnya'
+  priority:    string,  // 'rendah' | 'sedang' | 'tinggi'
+  date:        string,  // Tanggal target format YYYY-MM-DD (opsional)
+  time:        string,  // Waktu notifikasi format HH:MM (opsional)
+  isDone:      boolean, // Status selesai (true/false)
+  createdAt:   number,  // Timestamp pembuatan (ms Unix)
 }
 ```
 
----
-
-# 💻 Teknologi yang Digunakan
-
-- React.js
-- Vite
-- JavaScript (ES6)
-- CSS
-- Local Storage
-- Lucide React Icons
+Data disimpan di `localStorage` dengan key `aktivitasku_v1` sebagai array JSON.
 
 ---
 
-# ▶️ Cara Menjalankan Project
+## 🗃️ Struktur Proyek
 
-Clone repository
-
-```bash
-git clone <repository-url>
 ```
-
-Masuk ke folder project
-
-```bash
-cd taskora
-```
-
-Install dependency
-
-```bash
-npm install
-```
-
-Menjalankan project
-
-```bash
-npm run dev
+activity-manager/
+├── index.html          # Halaman utama & markup HTML
+├── css/
+│   └── style.css       # Seluruh styling (design tokens, komponen, responsif)
+├── js/
+│   └── app.js          # Logika CRUD, render, notifikasi, state management
+└── README.md           # Dokumentasi proyek
 ```
 
 ---
 
-# 🌐 Demo Aplikasi
+## ⚙️ Cara Menjalankan
 
-GitHub Repository
-
-> https://github.com/PutriIndraa/kelompok5.git
-
-Live Demo
-
-> https://kelompok5-bvod.vercel.app/
-
-```bash
-npm run dev
-```
-
-# 📌 Pemenuhan Kriteria UAS
-
-✅ React + Vite
-
-✅ CRUD (Create, Read, Update, Delete)
-
-✅ Lifting State Up
-
-✅ Props & Component
-
-✅ Local Storage
-
-✅ Search
-
-✅ Filter
+1. Clone atau download repositori ini
+2. Buka file `index.html` langsung di browser
+3. Tidak memerlukan server atau instalasi apapun
+4. Izinkan notifikasi browser untuk fitur alarm
 
 ✅ Progress Checklist
 
-✅ Dashboard
+## 🎨 Desain & Teknologi
 
-✅ Statistik
+- **HTML5** — Markup semantik, aksesibel, ARIA attributes
+- **CSS3** — Custom properties (CSS variables), Grid, Flexbox, animasi, media query
+- **JavaScript ES6+** — Modular, `'use strict'`, DOM API, localStorage API, Notification API
+- **Google Fonts** — Plus Jakarta Sans + Space Grotesk
+- **Color Palette:**
+  - Background: `#0d0f14` (deep dark)
+  - Primary: `#7c6dfa` (violet)
+  - Accent: `#32d4a4` (teal green)
+  - Warning: `#f5a623` (amber)
+  - Danger: `#f55f5f` (coral red)
 
 ✅ Kalender
 
-✅ Responsive UI
+## 🔗 Link Demo
+
+> _(Akan diisi setelah deployment ke Vercel/Netlify)_
 
 ---
 
-# 👨‍💻 Author
-
-Kelompok TASKORA
-
-- Rahma Nadya
-- Putri Indra Lestari Aryanto
-- Siti Khodijah
-- Nabilla Natasya Putri
-
----
-
-Terima kasih telah menggunakan **TASKORA - Task Organizer Assistant** 📚✨
+*Selamat Mengerjakan — Kelompok 1, SI IV-B 🚀*
