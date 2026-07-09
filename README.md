@@ -1,108 +1,113 @@
-KELOMPOK 6
-No	Nama	NIM
-1	Muhamad Kurnia	- 240160221025
-2	Fadhlan Mahdan Ghani	- 240160221012
-3	Rully Iksan Risandy	- 240160221042
-4	Patria Yustisi	- 240160221033
+# UJIAN AKHIR SEMESTER (UAS) GENAP TAHUN AKADEMIK 2025/2026
 
-🎱 TEMA & DESKRIPSI APLIKASI
-Aplikasi Penjadwalan Biliard
-Aplikasi Penjadwalan Biliard adalah sistem manajemen pemesanan meja biliard berbasis web yang dibangun menggunakan React.js dan Vite. Aplikasi ini dirancang untuk memudahkan pengelolaan jadwal pemesanan meja biliard secara digital, menggantikan sistem pencatatan manual yang rentan terhadap kesalahan dan konflik jadwal.
+**Mata Kuliah**: Pemrograman Berbasis Web Front-End  
+**Semester/SKS**: IV-A/B / 3 SKS  
+**Program Studi**: S1 Sistem Informasi  
+**Hari/Tanggal**: 
+**Waktu**:   -
+**Dosen**: Yanyan Sofiyan, M.Kom.  
+**Bentuk Soal**: ~~Analisis/Essay/Pilihan Ganda/Presentasi/Penugasan~~/Proyek \*)  
+**Pelaksanaan**: ~~Luring~~ / Daring \*)
 
-Latar Belakang
-Di tempat usaha biliard, sering terjadi masalah seperti:
+---
 
-Pemesanan meja yang bentrok (double booking)
+### A. Deskripsi Umum
+Anda diberi kebebasan untuk memilih dan merancang sendiri tema aplikasi, dengan syarat utama aplikasi tersebut merupakan aplikasi **CRUD (Create, Read, Update, Delete)**. Fokus utama penilaian adalah pada **logika CRUD yang fungsional** dan **antarmuka pengguna (UI/UX) yang baik**. Seluruh data akan dikelola di sisi klien (client-side).
 
-Kesulitan mencatat jadwal secara manual
+### B. Tema Proyek: Bebas & Kreatif
+Pilihlah sebuah ide aplikasi yang memungkinkan pengguna untuk mengelola sekumpulan data. Kreativitas dalam memilih tema dihargai, selama semua persyaratan teknis di bawah ini terpenuhi.
 
-Kesalahan dalam menghitung durasi dan biaya sewa
+**Contoh Ide Proyek (Anda tidak harus memilih dari daftar ini):**
+- **Aplikasi Manajemen Tugas (To-do List):** Menambah, melihat, menandai selesai, dan menghapus tugas.
+- **Aplikasi Pencatat Keuangan Sederhana:** Mencatat pemasukan dan pengeluaran.
+- **Aplikasi Daftar Kontak:** Mengelola daftar kontak teman atau kolega.
+- **Aplikasi Catatan Sederhana (Simple Notes):** Membuat, mengedit, dan menghapus catatan singkat.
+- **Aplikasi Manajemen Buku (Bookshelf App):** Mengelola koleksi buku yang sudah atau akan dibaca.
 
-Susahnya mencari jadwal yang tersedia
+#### Struktur Data
+Anda bebas menentukan struktur data untuk setiap `item` di aplikasi Anda, namun **wajib memiliki**:
 
-Oleh karena itu, kami mengembangkan aplikasi ini untuk memberikan solusi yang praktis dan efisien bagi pengelola usaha biliard.
+- Sebuah `id` yang unik (bisa menggunakan `String(+new Date())` atau library seperti `uuid`).
+- Minimal **dua properti data lainnya** (contoh: `{ title: 'Belajar React', isDone: false }`).
 
-✨ Fitur-Fitur Aplikasi
-1. Manajemen Jadwal
-➕ Tambah Jadwal: Menambahkan pemesanan baru dengan mengisi form (nama, telepon, tanggal, waktu, meja)
+Sebagai **contoh referensi**, untuk proyek "Aplikasi Manajemen Buku", Anda bisa menggunakan struktur data yang lebih detail seperti ini:
 
-📋 Daftar Jadwal: Menampilkan semua jadwal pemesanan yang sudah terdaftar
+```javascript
+// HANYA CONTOH
+{
+  id: string,         // ID unik (timestamp string)
+  title: string,      // Judul buku
+  author: string,     // Nama penulis
+  isRead: boolean,    // Status sudah dibaca/belum
+  addedDate: string   // Tanggal penambahan (format lokal)
+}
+```
+> Live Demo : https://book-managers.netlify.app
 
-✏️ Edit Jadwal: Mengubah data pemesanan yang sudah ada
+Persistensi Data (Wajib)
 
-🗑️ Hapus Jadwal: Menghapus jadwal pemesanan yang tidak aktif
+Gunakan `localStorage` untuk menyimpan data agar tidak hilang saat browser ditutup atau di-refresh. Manfaatkan hook `useEffect` untuk melakukan sinkronisasi antara state aplikasi dengan `localStorage`.
 
-2. Pencarian & Filter
-🔍 Pencarian: Mencari jadwal berdasarkan nama pemesan atau nomor telepon
 
-📅 Filter Tanggal: Menampilkan jadwal berdasarkan tanggal tertentu
+C. Persyaratan Teknis & Fungsionalitas Wajib
 
-📊 Sortir: Mengurutkan jadwal berdasarkan tanggal dan waktu
+Apapun tema yang Anda pilih, aplikasi Anda WAJIB memiliki fungsionalitas berikut:
 
-3. Validasi & Keamanan
-✅ Validasi Input: Memastikan data yang dimasukkan valid (nama wajib, nomor telepon 10-13 digit, waktu valid)
+1. Struktur & State Management (Bobot: 25%)
 
-🚫 Cek Ketersediaan Meja: Mencegah double booking dengan mengecek ketersediaan meja pada waktu yang dipilih
+- Gunakan Vite untuk inisialisasi proyek.
+- Terapkan konsep _"lifting state up"_: `State` utama (array data) harus berada di komponen level atas (`App.jsx`) dan fungsi `handler` (untuk CRUD) dioper ke komponen anak melalui props.
+- Buat komponen yang logis dan dapat digunakan kembali (misal: `FormInput`, `ItemList`, `Item`).
 
-💰 Perhitungan Otomatis: Menghitung durasi dan total harga secara otomatis
+2. Fungsionalitas `CRUD (Create, Read, Update, Delete)` (Bobot: 40%)
 
-4. Penyimpanan Data
-💾 LocalStorage: Data tersimpan di browser menggunakan LocalStorage
+- **CREATE**: Sediakan form untuk menambah data baru. Form harus menyertakan validasi dasar (misal: input utama tidak boleh kosong).
 
-🔄 Persistent Data: Data tetap tersimpan meskipun browser ditutup dan dibuka kembali
+- **READ**: Tampilkan semua data yang ada dengan jelas.
 
-5. User Interface
-🎨 Responsive Design: Tampilan yang responsif untuk berbagai ukuran layar
+  - (Nilai Plus): Jika data dapat dikelompokkan berdasarkan kategori atau status (misal: "Tugas Belum Selesai" dan "Tugas Selesai").
 
-🖥️ User-Friendly: Antarmuka yang intuitif dan mudah digunakan
+- **UPDATE**: Sediakan cara untuk mengubah data yang sudah ada.
 
-penjadwalan-biliard/
-│
-├── public/                          # File statis publik
-│   └── (assets publik)
-│
-├── src/                             # Source code utama
-│   ├── assets/                      # Aset statis (gambar, font, dll)
-│   │
-│   ├── components/                  # Komponen React
-│   │   ├── DaftarJadwal.jsx         # Menampilkan daftar jadwal
-│   │   ├── FormTambah.jsx           # Form untuk menambah jadwal
-│   │   ├── ItemJadwal.jsx           # Komponen item jadwal
-│   │   └── Pencarian.jsx            # Komponen pencarian jadwal
-│   │
-│   ├── hooks/                       # Custom hooks React
-│   │   └── useLocalStorage.js       # Hook untuk manajemen LocalStorage
-│   │
-│   ├── utils/                       # Utility functions
-│   │   └── helpers.js               # Fungsi-fungsi pembantu
-│   │
-│   ├── App.css                      # Styling utama aplikasi
-│   ├── App.jsx                      # Komponen utama aplikasi
-│   ├── index.css                    # Styling global
-│   └── main.jsx                     # Entry point React
-│
-├── .eslintrc.cjs                    # Konfigurasi ESLint
-├── .gitignore                       # File yang diabaikan Git
-├── eslint.config.js                 # Konfigurasi ESLint (alternatif)
-├── index.html                       # Template HTML utama
-├── package-lock.json                # Lock file dependency
-├── package.json                     # Dependensi dan script proyek
-├── README.md                        # Dokumentasi proyek
-├── vite.config.js                   # Konfigurasi Vite
-└── README.md                        # (Duplicate - mungkin typo)
+  - **Minimal**: Pengguna harus bisa mengubah satu properti (misal: mengubah status dari "belum selesai" menjadi "selesai").
+  - (Nilai Plus): Adanya fungsionalitas edit penuh melalui sebuah form.
 
-KETERANGAN FILE
-File/Folder	Fungsi
-public/	Menyimpan file statis seperti favicon, logo, atau asset publik lainnya
-src/assets/	Menyimpan aset seperti gambar, icon, atau font yang digunakan di komponen
-src/components/	Berisi semua komponen React yang digunakan dalam aplikasi
-src/hooks/	Berisi custom hooks React, termasuk useLocalStorage.js untuk penyimpanan data
-src/utils/	Berisi fungsi utilitas/helper untuk logika bisnis aplikasi
-App.jsx	Komponen root yang mengatur routing dan state global
-main.jsx	Entry point aplikasi, merender App ke DOM
-index.html	Template HTML utama dengan div root untuk React
-package.json	Mengelola dependencies dan script proyek
-vite.config.js	Konfigurasi build tool Vite
-.eslintrc.cjs	Konfigurasi linting untuk kode JavaScript/React
+- **DELETE**: Sediakan tombol untuk menghapus data. Wajib menampilkan dialog konfirmasi (`gunakan window.confirm()`) sebelum data dihapus permanen.
 
-link demo project kelompok 6:https://penjadwalan-biliard.netlify.app/
+3. UI/UX & Interaktivitas (Bobot: 20%)
+
+- Desain Antarmuka: Tampilan harus bersih, rapi, dan mudah dipahami oleh pengguna.
+
+- **Umpan Balik (Feedback)**: Berikan umpan balik yang jelas kepada pengguna (misal: `form` dikosongkan setelah `submit` berhasil, notifikasi sederhana, dll).
+
+- **Fitur Pencarian/Filter**: Wajib ada fitur untuk mencari atau memfilter data berdasarkan salah satu propertinya secara `real-time.`
+
+4. Deployment & Kualitas Kode (Bobot: 15%)
+
+- Kode harus bersih, terstruktur, dan mudah dibaca.
+
+- Unggah proyek ke repositori `GitHub`.
+
+- Deploy aplikasi Anda ke `Vercel` atau `Netlify` dan pastikan berfungsi dengan baik.
+
+D. Kriteria Penilaian Rinci
+
+| Kriteria | Bobot |
+|----------|-------|
+| Fungsionalitas CRUD Lengkap & Benar | 40% |
+| Manajemen State, Props, & Alur Data | 25% |
+| Desain UI/UX dan Interaktivitas Pengguna | 20% |
+| Kualitas Kode, Deployment, & Dokumentasi | 15% |
+| Total | 100% |
+
+E. Prosedur Pengumpulan
+
+1. Buat file `README.md` yang informatif di dalam repositori GitHub Anda.
+2. File README.md wajib berisi:
+
+   - **Nama Kelompok & NIM** Anda.
+   - **Tema & Deskripsi Aplikasi:** Jelaskan aplikasi apa yang Anda buat dan fitur-fiturnya.
+   - **Struktur Data**: Jelaskan struktur objek yang Anda gunakan untuk aplikasi Anda.
+   - **Link Aplikasi Live**: URL Vercel/Netlify Anda yang sudah berfungsi.
+
+3. Push ke repositori https://github.com/PBWFEND/UAS
