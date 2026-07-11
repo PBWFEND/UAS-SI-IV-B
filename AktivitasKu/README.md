@@ -7,8 +7,8 @@
 
 ## 👥 Identitas Kelompok
 
-Kelompok 1  
-SI IV-B
+**Nama Kelompok:** Kelompok 1  
+**Kelas:** SI IV-B
 
 | No | Nama |
 |----|------|
@@ -17,7 +17,8 @@ SI IV-B
 | 3 | Rendi Fergian Sukmawan |240160221037
 | 4 | Zhilan Maulana |24010221049
 
-link website : https://aktifitasku.netlify.app
+
+Link Website : https://aktifitasku.netlify.app/
 
 **Dosen:** Yanyan Sofiyan, M.Kom.
 
@@ -95,7 +96,7 @@ activity-manager/
 3. Tidak memerlukan server atau instalasi apapun
 4. Izinkan notifikasi browser untuk fitur alarm
 
-✅ Progress Checklist
+---
 
 ## 🎨 Desain & Teknologi
 
@@ -110,7 +111,7 @@ activity-manager/
   - Warning: `#f5a623` (amber)
   - Danger: `#f55f5f` (coral red)
 
-✅ Kalender
+---
 
 ## 🔗 Link Demo
 
