@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AktivitasKu</title>
+    <meta
+      name="description"
+      content="Aplikasi manajemen kegiatan modern dengan notifikasi waktu nyata"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ===== NOTIFICATION TOAST ===== -->
+    <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ===== MODAL OVERLAY ===== -->
+    <div id="modal-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 id="modal-title" class="modal-title">Edit Kegiatan</h2>
+          <button id="modal-close" class="modal-close" aria-label="Tutup modal">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="edit-title">Nama Kegiatan <span class="required">*</span></label>
+            <input type="text" id="edit-title" class="form-input" placeholder="Masukkan nama kegiatan..." maxlength="80" />
+            <span class="char-counter" id="edit-title-counter">0/80</span>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-desc">Deskripsi</label>
+            <textarea id="edit-desc" class="form-input form-textarea" placeholder="Tambahkan deskripsi singkat..." rows="3" maxlength="200"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="edit-category">Kategori</label>
+              <select id="edit-category" class="form-input form-select">
+                <option value="personal">👤 Personal</option>
+                <option value="kuliah">🎓 Kuliah</option>
+                <option value="kerja">💼 Kerja</option>
+                <option value="kesehatan">💪 Kesehatan</option>
+                <option value="lainnya">📌 Lainnya</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-priority">Prioritas</label>
+              <select id="edit-priority" class="form-input form-selectm">
+                <option value="rendah">🟢 Rendah</option>
+                <option value="sedang">🟡 Sedang</option>
+                <option value="tinggi">🔴 Tinggi</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="edit-date">Tanggal</label>
+              <input type="date" id="edit-date" class="form-input" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-time">Waktu <span class="hint">(untuk notifikasi)</span></label>
+              <input type="time" id="edit-time" class="form-input" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="modal-cancel" class="btn btn-ghost">Batal</button>
+          <button id="modal-save" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+            </svg>
+            Simpan Perubahan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== NOTIFICATION PERMISSION BANNER ===== -->
+    <div id="notif-banner" class="notif-banner hidden">
+      <div class="notif-banner-inner">
+        <span class="notif-banner-icon">🔔</span>
+        <p>Aktifkan notifikasi browser agar tidak melewatkan alarm kegiatan kamu!</p>
+        <button id="notif-allow" class="btn btn-sm btn-accent">Aktifkan</button>
+        <button id="notif-dismiss" class="btn btn-sm btn-ghost">Nanti</button>
+      </div>
+    </div>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+        </div>
+        <span class="brand-name">AktivitasKu</span>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="sidebar-stats">
+        <div class="stat-card">
+          <span class="stat-number" id="stat-total">0</span>
+          <span class="stat-label">Total</span>
+        </div>
+        <div class="stat-card stat-card--active">
+          <span class="stat-number" id="stat-pending">0</span>
+          <span class="stat-label">Aktif</span>
+        </div>
+        <div class="stat-card stat-card--done">
+          <span class="stat-number" id="stat-done">0</span>
+          <span class="stat-label">Selesai</span>
+        </div>
+      </div>
+
+      <!-- Filter Nav -->
+      <nav class="sidebar-nav" aria-label="Filter kegiatan">
+        <p class="nav-label">TAMPILAN</p>
+        <button class="nav-item active" data-filter="semua">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Semua Kegiatan
+        </button>
+        <button class="nav-item" data-filter="aktif">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Sedang Berjalan
+        </button>
+        <button class="nav-item" data-filter="selesai">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Sudah Selesai
+        </button>
+        <button class="nav-item" data-filter="hari-ini">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Hari Ini
+        </button>
+
+        <p class="nav-label" style="margin-top:1.2rem">KATEGORI</p>
+        <button class="nav-item" data-filter="cat:personal">
+          <span>👤</span> Personal
+        </button>
+        <button class="nav-item" data-filter="cat:kuliah">
+          <span>🎓</span> Kuliah
+        </button>
+        <button class="nav-item" data-filter="cat:kerja">
+          <span>💼</span> Kerja
+        </button>
+        <button class="nav-item" data-filter="cat:kesehatan">
+          <span>💪</span> Kesehatan
+        </button>
+        <button class="nav-item" data-filter="cat:lainnya">
+          <span>📌</span> Lainnya
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p class="sidebar-footer-text">Kelompok 1 — SI IV-B</p>
+        <p class="sidebar-footer-text">UAS Pemrograman Web 2025/2026</p>
+      </div>
+    </aside>
+
+    <!-- ===== MOBILE TOPBAR ===== -->
+    <header class="topbar">
+      <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+      <span class="topbar-brand">AktivitasKu</span>
+      <div class="topbar-clock" id="topbar-clock">--:--</div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-header-left">
+          <h1 class="page-title" id="page-title">Semua Kegiatan</h1>
+          <p class="page-subtitle" id="page-date">Memuat tanggal...</p>
+        </div>
+        <div class="live-clock" id="live-clock">
+          <div class="clock-time" id="clock-display">--:--:--</div>
+          <div class="clock-label">Waktu Sekarang</div>
+        </div>
+      </div>
+
+      <!-- Add Activity Form Panel -->
+      <section class="add-panel" id="add-panel">
+        <div class="add-panel-header" id="add-panel-toggle" role="button" tabindex="0" aria-expanded="true" aria-controls="add-form-body">
+          <div class="add-panel-title">
+            <div class="add-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            </div>
+            <span>Tambah Kegiatan Baru</span>
+          </div>
+          <svg class="chevron-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"/>
+          </svg>
+        </div>
+
+        <div class="add-form-body" id="add-form-body">
+          <form id="add-form" novalidate autocomplete="off">
+            <div class="form-grid">
+              <div class="form-group form-group--full">
+                <label class="form-label" for="input-title">Nama Kegiatan <span class="required">*</span></label>
+                <input type="text" id="input-title" class="form-input" placeholder="Apa yang ingin kamu kerjakan?" maxlength="80" required />
+                <span class="char-counter" id="title-counter">0/80</span>
+                <span class="form-error" id="title-error">Nama kegiatan tidak boleh kosong.</span>
+              </div>
+              <div class="form-group form-group--full">
+                <label class="form-label" for="input-desc">Deskripsi <span class="optional">(opsional)</span></label>
+                <textarea id="input-desc" class="form-input form-textarea" placeholder="Tambahkan catatan atau detail tambahan..." rows="2" maxlength="200"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-category">Kategori</label>
+                <select id="input-category" class="form-input form-select">
+                  <option value="personal">👤 Personal</option>
+                  <option value="kuliah">🎓 Kuliah</option>
+                  <option value="kerja">💼 Kerja</option>
+                  <option value="kesehatan">💪 Kesehatan</option>
+                  <option value="lainnya">📌 Lainnya</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-priority">Prioritas</label>
+                <select id="input-priority" class="form-input form-select">
+                  <option value="rendah">🟢 Rendah</option>
+                  <option value="sedang" selected>🟡 Sedang</option>
+                  <option value="tinggi">🔴 Tinggi</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-date">Tanggal Target</label>
+                <input type="date" id="input-date" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="input-time">
+                  Waktu Notifikasi
+                  <span class="hint">— alarm tepat waktu</span>
+                </label>
+                <input type="time" id="input-time" class="form-input" />
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="button" id="btn-reset" class="btn btn-ghost">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.79"/></svg>
+                Reset Form
+              </button>
+              <button type="submit" class="btn btn-primary" id="btn-add">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Tambah Kegiatan
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Toolbar: search + sort + view toggle -->
+      <div class="toolbar">
+        <div class="search-wrapper">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input type="text" id="search-input" class="search-input" placeholder="Cari kegiatan..." aria-label="Cari kegiatan" />
+          <button id="search-clear" class="search-clear hidden" aria-label="Hapus pencarian">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="toolbar-right">
+          <select id="sort-select" class="form-input sort-select" aria-label="Urutkan">
+            <option value="newest">Terbaru</option>
+            <option value="oldest">Terlama</option>
+            <option value="priority">Prioritas</option>
+            <option value="name">A–Z</option>
+            <option value="date">Tanggal Target</option>
+          </select>
+          <div class="view-toggle" role="group" aria-label="Mode tampilan">
+            <button class="view-btn active" data-view="grid" aria-label="Grid view" aria-pressed="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </button>
+            <button class="view-btn" data-view="list" aria-label="List view" aria-pressed="false">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity List -->
+      <section class="activity-section">
+        <!-- Pending Activities -->
+        <div id="section-pending" class="group-section">
+          <div class="group-header">
+            <h2 class="group-title">
+              <span class="group-dot group-dot--pending"></span>
+              Kegiatan Aktif
+            </h2>
+            <span class="group-count" id="count-pending">0</span>
+          </div>
+          <div class="activity-grid" id="list-pending"></div>
+          <div class="empty-state hidden" id="empty-pending">
+            <div class="empty-icon">🎉</div>
+            <p class="empty-title">Semua beres!</p>
+            <p class="empty-sub">Tidak ada kegiatan aktif. Tambahkan kegiatan baru di atas.</p>
+          </div>
+        </div>
+
+        <!-- Done Activities -->
+        <div id="section-done" class="group-section">
+          <div class="group-header">
+            <h2 class="group-title">
+              <span class="group-dot group-dot--done"></span>
+              Sudah Selesai
+            </h2>
+            <span class="group-count" id="count-done">0</span>
+          </div>
+          <div class="activity-grid" id="list-done"></div>
+          <div class="empty-state hidden" id="empty-done">
+            <div class="empty-icon">📋</div>
+            <p class="empty-title">Belum ada yang selesai</p>
+            <p class="empty-sub">Tandai kegiatan sebagai selesai untuk melihatnya di sini.</p>
+          </div>
+        </div>
+
+        <!-- Global empty state for search -->
+        <div class="empty-state hidden" id="empty-search">
+          <div class="empty-icon">🔍</div>
+          <p class="empty-title">Tidak ditemukan</p>
+          <p class="empty-sub">Tidak ada kegiatan yang cocok dengan pencarian "<span id="empty-keyword"></span>".</p>
+          <button class="btn btn-ghost" id="btn-clear-search">Hapus Pencarian</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== SIDEBAR BACKDROP (mobile) ===== -->
+    <div class="sidebar-backdrop hidden" id="sidebar-backdrop"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
